@@ -1,0 +1,40 @@
+﻿@using UniPhotoGallery.DomainModel.ViewModels
+@model IViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <title>Administrační rozhraní galerií KusVola.cz</title>
+
+    @Styles.Render("~/Content/AdminCss")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jsadmin")
+        
+    @RenderSection("AdditionalScripts", required: false)
+</head>
+    <body>
+        <div class="adminMenu">
+            <a href="/admin/index">Admin Home</a> | <a href="/admin/processuploadedphotos">Zpracovat uploadnuté fotky</a> | <a href="/admin/PhotoTypeList">Typy fotek</a>
+            | <a href="/admin/PhotosList">Seznam fotek</a>
+        </div>
+        
+        @if (Model.ToastrType == ToastrType.Success)
+        {
+            <script>
+                toastr.success('@Model.ToastrMessage', 'Úspěch');
+            </script>
+        }
+            
+        @if (Model.ToastrType == ToastrType.Error)
+        {
+            <script>
+                toastr.error('@Model.ToastrMessage', 'Chyba');
+            </script>
+        }
+
+        @RenderBody()
+        
+    </body>
+</html>

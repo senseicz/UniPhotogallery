@@ -1,0 +1,22 @@
+﻿@using UniPhotoGallery.DomainModel.Domain
+@model UniPhotoGallery.DomainModel.ViewModels.AdminVM
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Adminsitrace galerií</h2>
+
+@if(Model.Galleries != null && Model.Galleries.Count > 0)
+{
+    var rootGallery = Model.Galleries.First(g => g.GalleryType == (int)GalleryTypes.Root);
+    
+    <p>@rootGallery.Name (<a href="/admin/GalleryEdit/@rootGallery.GalleryId">edit</a>)</p>
+    
+    @Html.Action("GalleryLeaf", "GalleryLeaf", new { area = "Partials", leafId = rootGallery.GalleryId })
+}
+
+<p style="margin-left: 20px;padding-bottom: 20px;">
+    Koš [počet fotek: @Model.Trash.PhotosCount] <a href="/admin/ClearTrash">vymazat koš</a>
+</p>
+<a href="/Admin/GalleryEdit">nová galerie</a>

@@ -1,0 +1,71 @@
+12/21/2012 15:28:43: Info debug
+12/21/2012 15:28:43: Warning Event Log Entry.
+12/21/2012 15:30:05: Info debug
+12/21/2012 15:30:05: Debug Event Log Entry.
+12/21/2012 15:30:05: Warning Event Log Entry.
+12/21/2012 15:53:47: Info debug
+12/21/2012 15:53:47: Debug Event Log Entry.
+12/21/2012 15:53:47: Warning Event Log Entry.
+01/01/2013 21:01:55: Info debug
+01/01/2013 21:01:55: Debug Event Log Entry.
+01/01/2013 21:01:55: Warning Event Log Entry.
+01/01/2013 21:02:21: Info debug
+01/01/2013 21:02:21: Debug Event Log Entry.
+01/01/2013 21:02:21: Warning Event Log Entry.
+03/08/2013 11:54:32: 'IndexMetadataHandler' was completed in 21ms
+03/08/2013 13:15:57: 'IndexMetadataHandler' was completed in 0ms
+03/08/2013 15:29:09: ::1 Request not found: /api/logout
+03/08/2013 15:59:07: ::1 Request not found: /api/logout
+03/08/2013 15:59:50: Setting Custom HTTP Header: Location: https://www.facebook.com/dialog/oauth?client_id=330536427004595&redirect_uri=http%3a%2f%2fbootstrapapi.apphb.com%2fapi%2fauth%2ffacebook&scope=email,read_stream,offline_access
+03/08/2013 16:03:11: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/08/2013 16:03:11: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/08/2013 16:03:11: Setting Custom HTTP Header: Pragma: no-cache
+03/08/2013 16:03:17: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/08/2013 16:04:09: ServiceBase<TRequest>::Service Exception
+03/08/2013 16:05:16: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/08/2013 16:05:16: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/08/2013 16:05:16: Setting Custom HTTP Header: Pragma: no-cache
+03/08/2013 16:05:36: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/08/2013 16:10:31: ServiceBase<TRequest>::Service Exception
+03/08/2013 16:12:41: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/08/2013 16:12:41: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/08/2013 16:12:41: Setting Custom HTTP Header: Pragma: no-cache
+03/08/2013 16:12:55: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/08/2013 16:13:12: ServiceBase<TRequest>::Service Exception
+03/08/2013 17:02:08: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/08/2013 17:02:08: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/08/2013 17:02:08: Setting Custom HTTP Header: Pragma: no-cache
+03/08/2013 17:02:09: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/08/2013 17:02:22: ServiceBase<TRequest>::Service Exception
+03/08/2013 17:04:40: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/08/2013 17:04:40: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/08/2013 17:04:40: Setting Custom HTTP Header: Pragma: no-cache
+03/08/2013 17:04:41: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/08/2013 17:04:55: ServiceBase<TRequest>::Service Exception
+03/18/2013 17:00:10: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/18/2013 17:00:10: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/18/2013 17:00:10: Setting Custom HTTP Header: Pragma: no-cache
+03/18/2013 17:00:11: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:05:17: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/19/2013 15:05:17: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/19/2013 15:05:17: Setting Custom HTTP Header: Pragma: no-cache
+03/19/2013 15:05:18: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:09:53: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/19/2013 15:09:53: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/19/2013 15:09:53: Setting Custom HTTP Header: Pragma: no-cache
+03/19/2013 15:09:54: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:18:22: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/19/2013 15:18:22: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/19/2013 15:18:22: Setting Custom HTTP Header: Pragma: no-cache
+03/19/2013 15:18:23: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:18:23: Setting Custom HTTP Header: Location: http://localhost:61729/#s=1
+03/19/2013 15:28:28: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/19/2013 15:28:28: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/19/2013 15:28:28: Setting Custom HTTP Header: Pragma: no-cache
+03/19/2013 15:28:28: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:29:02: Setting Custom HTTP Header: Location: http://localhost:61729/#s=1
+03/19/2013 15:57:06: Setting Custom HTTP Header: Content-Type: text/html; charset=utf-8
+03/19/2013 15:57:06: Setting Custom HTTP Header: Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+03/19/2013 15:57:06: Setting Custom HTTP Header: Pragma: no-cache
+03/19/2013 15:57:07: Error trying to set properties UniPhotoGallery.DomainModel.Auth.CustomUserSession.String > UniPhotoGallery.DomainModel.Auth.User.Int32
+03/19/2013 15:57:07: Setting Custom HTTP Header: Location: http://localhost:61729/#s=1

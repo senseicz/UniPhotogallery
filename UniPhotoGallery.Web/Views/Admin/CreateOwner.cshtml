@@ -1,0 +1,56 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.Admin.VMOwner
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("CreateOwner", "Admin"))
+{
+    <table>
+        <tr>
+            <td>
+                ID vlastníka:
+            </td>
+            <td>
+                @Model.OwnerId
+                @Html.HiddenFor(o => o.OwnerId)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                ID uživatele:
+            </td>
+            <td>
+                @Model.UserId
+                @Html.HiddenFor(o => o.UserId)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                Jméno vlastníka galerie:
+            </td>
+            <td>
+                @Html.TextBoxFor(o => o.OwnerName)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                Adresář:
+            </td>
+            <td>
+                @Html.TextBoxFor(o => o.OwnerDirectory)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Uložit" name="submit" />
+            </td>
+        </tr>
+    </table>
+}

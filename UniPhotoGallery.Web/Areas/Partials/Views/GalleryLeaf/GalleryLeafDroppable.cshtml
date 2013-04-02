@@ -1,0 +1,35 @@
+﻿@using UniPhotoGallery.DomainModel.Domain
+@model List<Gallery>
+
+<ul>
+    @foreach(var galerie in Model.OrderBy(m => m.Order))
+    {
+        string photosAlreadyIn = "";
+
+        if (galerie.PhotosCount > 0)
+        {
+            foreach (var photo in galerie.GalleryPhotos)
+            {
+                photosAlreadyIn = photosAlreadyIn + photo.PhotoId + ",";
+            }
+        }
+
+        <li id="gal-@galerie.GalleryId">
+            
+            @if(galerie.GalleryType != (int)GalleryTypes.Preview)
+            {
+                <strong>@galerie.Name</strong>
+                @:[počet: <span id = "gal-counter-@galerie.GalleryId" > @galerie.PhotosCount </span> @*, nově přidaných <span id = "gal-newCounter-@galerie.Id" > 0 </span>*@]
+                  <img class="addToGalleryButton" src="/Content/img/document_add_24.png" width="24" height="24" alt="Přidat označené do této galerie" onclick="addSelectedPhotosToGallery('@galerie.GalleryId')" title="Přidat označené do této galerie" />
+            }
+            else
+            {
+                @galerie.Name @:[náhledová galerie]
+            }
+            
+            <input type="hidden" name="addedPhotos-@galerie.GalleryId" id="addedPhotos-@galerie.GalleryId" value="@photosAlreadyIn" />
+            
+            @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new { area = "Partials", leafId = galerie.GalleryId })
+        </li>
+    }
+</ul>

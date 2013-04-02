@@ -1,0 +1,177 @@
+﻿@using UniPhotoGallery.Extensions
+@model UniPhotoGallery.DomainModel.ViewModels.GalleryEdit
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AdditionalScripts
+{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+
+    <script src="~/Scripts/GalleryEdit.js"></script>
+}
+
+<h2>Galerie</h2>
+
+@using (Html.BeginForm("GalleryEdit", "Admin"))
+{
+    @Html.HiddenFor(r => r.GalleryId)
+    <div class="inputRow">
+        <span class="inputField">Název galerie:  @Html.TextBoxFor(r => r.Name)</span>
+        <span class="inputField">Popis:  @Html.TextBoxFor(r => r.Description) </span>
+        <span class="inputField w20">Pořadí: @Html.TextBoxFor(r => r.Order) </span>
+        <span class="inputField w50">Rok: @Html.TextBoxFor(r => r.Year) </span>
+        <span class="inputField">Náhledová: @Html.CheckBoxFor(r => r.PreviewGallery)</span>
+    </div>
+
+    if (Model.GalleryId == null || Model.ParentGalleryId != "0")
+    {
+        <div class="inputRow">
+            <span class="inputField">Rodičovská galerie: @Html.DropDownList("ParentGalleryId", Model.GalleryList) </span>
+        </div>
+    }
+    else
+    {
+        <input type="hidden" name="ParentGalleryId" value="0" />
+    }
+        
+    <input type="hidden" id="hdnPreviewPhotosShadow" name="hdnPreviewPhotosShadow" value="@Model.PreviewPhotoIds"/>
+    <input type="hidden" id="hdnPhotosShadow" name="hdnPhotosShadow" value="@Model.PhotoIds"/>
+    <input type="hidden" id="hdnTrashShadow" name="hdnTrashShadow" value="@Model.PhotoIds"/>
+    
+    <div class="inputRow">
+        <input type="submit" name="btnSubmit" id="SubmitButton" value="Uložit základní změny" />
+    </div>
+}
+    
+    
+@if (Model.GalleryId.HasValue)
+{
+    <hr />
+
+    using (Html.BeginForm("GalleryEditCustom", "Admin"))
+    {
+        @Html.HiddenFor(r => r.GalleryId)
+        <div class="two-cols">
+
+            <div class="col1">
+                <h2>Preview fotky (max. 5)</h2>
+                <input type="hidden" id="hdnPreviewPhotos" name="hdnPreviewPhotos" value="@Model.PreviewPhotoIds"/>
+
+                <div class="container-h80">
+                    <ul id="preview-photos" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                        @if (Model.PreviewPhotos != null && Model.PreviewPhotos.Count > 0)
+                        {
+                            foreach (var photo in Model.PreviewPhotos.OrderBy(p => p.Order))
+                            {
+                                <li class="ui-widget-content" data-photoId="@photo.PhotoId">
+                                     @Html.Photo(photo.PhotoId, "adminthumb")
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="cleaner"></div>
+                <div>
+                    <input type="button" id="btnPreviewMoveUp" value="<-" disabled="disabled"/>
+                    <input type="button" id="btnPreviewMoveDown" value="->" disabled="disabled"/>
+                    <input type="button" id="btnRemoveFromPreview" value="Označné vyřadit z náhledů" disabled="disabled"/>
+                </div>
+            
+                <div class="fc18"></div>
+                     
+                @*standard gallery edit*@
+                @if (Model.ParentGalleryId != "0" && !Model.PreviewGallery) 
+                {
+                    <h2>Fotky v galerii</h2>
+                    <input type="hidden" id="hdnPhotos" name="hdnPhotos" value="@Model.PhotoIds"/>
+
+                    <div>
+                        <input type="button" id="btnPreviewMoveUp" value="<-" disabled="disabled"/>
+                        <input type="button" id="btnPreviewMoveDown" value="->" disabled="disabled"/>
+                        <input type="button" id="btnAddToPreview" value="Označené přiřadit do náhledů" disabled="disabled"/>
+                        <input type="button" id="btnRemoveFromGallery" value="Označné hodit do koše" disabled="disabled"/>
+                        <input type="button" id="btnEditDescription" value="Editovat popisek" disabled="disabled"/>
+                    </div>
+                    <div class="cleaner"></div>
+                    <div class="container">
+                        <ul id="photos" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                            @if (Model.Photos != null && Model.Photos.Count > 0)
+                            {
+                                foreach (var photo in Model.Photos.OrderBy(p => p.Order))
+                                {
+                                    <li class="ui-widget-content" data-photoId="@photo.PhotoId">
+                                        @Html.Photo(photo.PhotoId, "adminthumb")
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="inputRow">
+                        <span class="inputField">Vyberte galerii: @Html.DropDownList("galId", Model.GalleryListForPreviewGalleries, "---Vyberte galerii") </span>
+                    </div>
+                         
+                    <div>
+                        <input type="button" id="btnAddToPreview" value="Označené přiřadit do náhledů" disabled="disabled"/>
+                    </div>
+                    <div class="cleaner"></div>
+                    <div class="container">
+                        <ul id="photos" class="photoContainer ui-helper-reset ui-helper-clearfix"></ul>
+                    </div>
+                }
+                
+                <div class="fc18"></div>
+                
+                <h2>Dočasná galerie pro přenosy fotek (nezobrazuje se)</h2>    
+                <input type="hidden" id="hdnTrash" name="hdnTrash" value="@Model.TrashPhotoIds"/>
+                     
+                <div>
+                    <input type="button" id="btnAddToGallery" value="Označné přesunout do galerie" disabled="disabled"/>
+                </div>
+                <div class="cleaner"></div>
+
+                <div class="container">
+                    <ul id="trash" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                                    
+                        @if (Model.TrashPhotos != null && Model.TrashPhotos.Count > 0)
+                        {
+                            foreach (var photo in Model.TrashPhotos.OrderBy(p => p.Order))
+                            {
+                                <li class="ui-widget-content" data-photoId="@photo.PhotoId">
+                                    @Html.Photo(photo.PhotoId, "minithumb")
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col2">
+                <div id="PhotoDescriptionEdit" class="Hidden">
+                    <h3>Editace popisku fotky</h3>
+                    <div id="PhotoDescriptionEdit_Warning" class="Hidden">Editujete popisek více fotografií!</div>
+                    <ul id="PhotoDescriptionEdit_Preview" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                    
+                    </ul>
+                    <input id="PhotoDescriptionEdit_PhotoId" type="hidden" />
+                    Popis: <br />
+                    <textarea id="PhotoDescriptionEdit_Description"></textarea>
+                
+                    <input type="button" value="Uložit popisek fotky" id="PhotoDescriptionEdit_Button"/>
+                </div>
+            </div>
+        </div>
+        <div class="cleaner"></div>
+        <input type="submit" name="btnSubmit" id="SubmitButton" value="Uložit změny" />
+    }
+}
+
+
+
+

@@ -1,0 +1,71 @@
+﻿@using UniPhotoGallery.DomainModel.Domain
+@model UniPhotoGallery.DomainModel.ViewModels.ProcessUploadedPhotosVM
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AdditionalScripts
+{
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/themes/base/css")
+
+    <script src="~/Scripts/ProcessUploadedPhotos.js"></script>
+}
+
+<h2>Fotky čekající na zpracování</h2>
+
+<div class="two-cols ui-widget ui-helper-clearfix">
+    <div class="col1">
+        <div class="container h700">
+            @if (Model.PhotosWaiting != null && Model.PhotosWaiting.Count > 0)
+            {
+                <ul id="photos" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                    @foreach (var photo in Model.PhotosWaiting)
+                    {
+                        <li class="ui-widget-content ui-corner-tr" data-photoId="@photo.PhotoId">
+                            <img src="@photo.ThumbPath"/>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+
+    <div class="col2">
+        <form method="POST" action="/admin/ProcessUploadedPhotosCustom" id="processUploadedPhotosForm">
+            @if (Model.Galleries != null && Model.Galleries.Count > 0)
+            {
+                var rootGallery = Model.Galleries.First(g => g.GalleryType == (int)GalleryTypes.Root);
+    
+                <p><strong>@rootGallery.Name</strong></p>
+    
+                <div class="dropContainer">
+                    @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new { area = "Partials", leafId = rootGallery.GalleryId })
+                </div>
+            }
+        </form>
+    </div>
+</div>
+<div class="cleaner"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

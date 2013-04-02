@@ -1,0 +1,22 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.PhotoTypeList
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Administrace typů fotek</h2>
+
+<a href="/Admin/PhotoTypeEdit" class="adminLinkButton">nový typ</a>
+
+@if(Model != null && Model.PhotoTypes != null && Model.PhotoTypes.Any())
+{
+    <ul>
+        @foreach (var type in Model.PhotoTypes)
+        {
+            <li>
+                @type.Name
+                &nbsp; <a href="/Admin/PhotoTypeEdit/@type.PhotoTypeId">editovat</a>
+            </li>
+        }
+    </ul>
+}

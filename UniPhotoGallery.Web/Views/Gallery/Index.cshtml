@@ -1,0 +1,105 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.UserGallery.IndexVM
+
+@{
+    var mainPhotoStyle = "";
+    if(Model.HasSomePreviewImage)
+    {
+        mainPhotoStyle = string.Format("style=\"background-image: url('{0}')\"", Model.FirstPreviewUrl);
+    }
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        var galData = @Html.Raw(Model.GalleryCyclerJson);
+        
+        function getImages() {
+            if(galData.Images != null) {
+                return galData.Images;
+            }
+            return null;
+        }
+
+        function getImagesById(id) {
+            for(var i=0;i<galData.length; i++) {
+                if(galData[i].Id == id) {
+                    return galData[i].Images;
+                }
+            }
+            return null;
+        }
+
+        function switchBackground(imageUrl) {
+            $('.mainPhoto').fadeTo('fast', 0.7, function()
+            {
+                $(this).css('background-image', 'url(' + imageUrl + ')');
+            }).fadeTo('slow', 1);
+        }
+
+        function setNextBGImage() {
+            var rootImages = getImages();
+            if(rootImages != null && rootImages.length > 0) {
+
+                var nextImagePos = 0;
+                var imagePos = rootImages.indexOf(currentBGImage);
+
+                if( imagePos > -1) {
+                    if(imagePos < rootImages.length - 1) {
+                        nextImagePos = imagePos + 1;  
+                    }
+                }
+
+                switchBackground(rootImages[nextImagePos]);
+                currentBGImage = rootImages[nextImagePos];
+            }
+        }
+        
+        var currentBGImage = @Html.Raw(string.Format("'{0}'", Model.FirstPreviewUrl));
+        var interval;
+
+        $(function() {
+            interval = setInterval(function() {setNextBGImage();}, 5000);
+
+            $(".galleryName").hover(
+                function () {
+                    clearInterval(interval);
+                    var galleryId = $(this).attr("data-galleryId");
+                    var galleryImages = getImagesById(galleryId);
+                    if(galleryImages != null && galleryImages.length > 0) {
+                        switchBackground(galleryImages[0]);
+                    } else {
+                        interval = setInterval(function() {setNextBGImage();}, 5000);
+                    }
+                },
+                function () {
+                    clearInterval(interval);
+                    interval = setInterval(function() {setNextBGImage();}, 5000);
+                });
+        });
+
+    </script>
+}
+
+<div class="mainPhoto" @Html.Raw(mainPhotoStyle)>
+    <div class="mainPhotoHeader">
+        @Model.RootGallery.Name
+    </div>
+    
+    @if(Model.RootGalleryChildrens != null && Model.RootGalleryChildrens.Count > 0)
+    {
+        foreach (var child in Model.RootGalleryChildrens)
+        {
+            <a href="/@Model.OwnerSeoName/Gallery/Show/@child.GalleryId">
+                <div class="galleryName" data-galleryId="@child.GalleryId">
+                    @child.Name
+                </div>
+            </a>
+            <div class="cleaner"></div>
+        }
+    }
+    
+    <div class="mainPhotoUserEmail">
+        tonda@tonda.cz
+    </div>
+</div>
+

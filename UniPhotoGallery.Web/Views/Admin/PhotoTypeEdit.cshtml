@@ -1,0 +1,31 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.PhotoTypeEdit
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Typ fotky</h2>
+
+@using (Html.BeginForm("PhotoTypeEdit"))
+{
+    @Html.HiddenFor(r => r.PhotoTypeId)
+    <p>
+        Název typu:  @Html.TextBoxFor(r => r.Name)
+    </p>
+    <p>
+        Systémový název:  @Html.TextBoxFor(r => r.SystemName)
+    </p>
+    <p>
+        Adresář: @Html.TextBoxFor(r => r.Directory)
+    </p>
+    <p>
+        Cílová šířka fotky: @Html.TextBoxFor(r => r.X)
+    </p>
+    <p>
+        Cílová výška fotky (nepovinné): @Html.TextBoxFor(r => r.Y)
+    </p>
+    
+    <p>
+        <input type="submit" name="btnSubmit" id="SubmitButton" value="Odeslat" />
+    </p>    
+}

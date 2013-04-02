@@ -1,0 +1,238 @@
+﻿body {
+	font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+input[type=text] {
+	width: 250px;
+	border: 1px solid #E2E2E2;
+	padding: 4px;
+}
+
+textarea {
+	width: 300px;
+	height: 80px;
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 1em;
+	border: 1px solid #E2E2E2;
+	padding: 4px;
+}
+
+input[type=text]:focus, textarea:focus {
+	border: 1px solid black;
+}
+
+.inputRow {
+    padding-bottom: 10px;
+}
+
+.inputField {
+    padding-right: 20px;
+}
+
+.w20 input[type=text] {
+    width: 20px;
+}
+
+.w50 input[type=text] {
+    width: 50px;
+}
+		
+.photoContainer {
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0;
+}
+		
+.photoContainer li {
+    position: relative;
+	float: left; 
+	width: 110px;
+    height: 76px;
+	text-align: center;
+	display: block;
+	z-index: 100;
+    border: 1px solid #000;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.photoContainer li img{
+    /*width: 100px;*/
+    padding: 5px;
+    height: 66px;
+}
+
+.photoContainer .ui-selecting { background-color: #FECA40; }
+.photoContainer .ui-selected { background-color: #F39814; }
+		
+.container-w800{
+	width: 800px;
+	height: 350px;
+	overflow-x: auto;
+	padding: 5px; 
+	border: 1px solid black;
+	float: left;
+	margin-left: 10px;
+}
+
+.container-w800-h150{
+	width: 800px;
+	height: 150px;
+	overflow-x: auto;
+	padding: 5px; 
+	border: 1px solid black;
+	float: left;
+	margin-left: 10px;
+}
+
+.container{
+	width: 580px;
+	height: 240px;
+	overflow-x: auto;
+	padding: 2px; 
+	border: 1px solid sienna;
+	float: left;
+}
+
+.container-h80{
+	width: 580px;
+	height: 80px;
+	overflow-x: auto;
+	padding: 2px; 
+	border: 1px solid sienna;
+	float: left;
+}
+
+.container-w330{
+	width: 330px;
+	height: 240px;
+	overflow-x: auto;
+	padding: 2px; 
+	border: 1px solid sienna;
+	float: left;
+}
+
+.h350{ height: 350px;}
+.h700{ height: 700px;}
+
+.dropContainer { font-size: 11px;}
+		
+.ui-state-highlight-drag {
+		width: 100px; 
+		height: 68px;
+		background: orangered !important; 
+        border: 1px solid black;
+}
+		
+.connectedSortable {
+	border: 1px solid white;
+}
+		
+.InputError {
+	padding-left: 10px;
+	color: red;
+	font-weight: bold;
+}
+		
+.Hidden {
+	display: none !IMPORTANT;
+}
+
+.FloatLeft {
+    float: left;
+}
+
+.SmallNote {
+    font-size: 0.8em;
+    color: darkslateblue;
+}
+
+.cleaner {
+    clear: both;
+}
+
+.two-cols {margin: 10px 0 15px 0; line-height: 1.55em;}
+.two-cols .col1 {float: left; width: 600px; padding-right: 20px; position: relative;}
+.two-cols .col2 {float: left; width: 400px; padding-right: 0; position: relative; margin-right: 0;}
+.cleaner {clear: both;}
+
+.fc18 {clear: both; display: block; float: none; font-size: 18px; height: 18px; line-height: 0; margin: 0; overflow: hidden; padding: 0;}
+
+/* galerie obrazku */
+/*ul.ui-sortable li {height: 112px; margin-right: 4px; margin-bottom: 4px; position: relative; z-index: auto;}*/
+
+/*
+ul.ui-sortable {}
+ul.ui-sortable li img {width: 140px; max-height: 112px;}
+li span.hoverOrig {display: none; position: absolute; left: 100px; top: 100px; z-index: 5;}
+li span.hoverOrig img {width: 450px; max-height: 650px; position: relative; z-index: 5;}
+*/
+
+/* messages */
+
+.MessageOK
+{
+ display: block;
+ margin: 5px;
+ padding: 5px 0px 5px 10px;
+ font-weight: bold;
+ background-color: #00cc00;
+ border-left: solid 10px #008000;
+ color: #fff;
+ text-transform: uppercase;
+}
+
+.MessageWarning
+{ 
+ display: block;
+ margin: 5px;
+ padding: 5px 0px 5px 10px;
+ font-weight: bold;
+ background-color: #0080ee;
+ border-left: solid 10px #004080;
+ color: #fff;
+ text-transform: uppercase;
+}
+
+.MessageError
+{
+ display: block;
+ margin: 5px;
+ padding: 5px 0px 5px 10px;
+ font-weight: bold;
+ background-color: #cc0000;
+ border-left: solid 10px #800000;
+ color: #fff;
+ text-transform: uppercase;
+}
+
+.addToGalleryButton{ /* float: right; */cursor: pointer; }
+ul, li{ list-style-type: none; }
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}

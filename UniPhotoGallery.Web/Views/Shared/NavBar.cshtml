@@ -1,0 +1,66 @@
+﻿@using UniPhotoGallery.DomainModel.Auth
+@using UniPhotoGallery.Services
+@{
+    CustomUserSession session = ViewBag.UserSession;
+}
+
+<div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+        <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="#">KUS VOLA</a>
+        <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+        <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li class="active">
+                    <a href="/">Všichni voli</a>
+                </li>
+            </ul>
+            
+            @if(session != null)
+            {
+                if(session.IsAuthenticated) 
+                {
+                    <p class="navbar-form pull-right">
+                        Přihlášený uživatel: <strong>@session.DisplayName</strong> 
+                        <a href="/account/logout">logout</a>
+                        
+                        @if (session.Roles != null && session.Roles.Any(r => r.ToLower().Contains("admin")))
+                        {
+                            <a href="/admin/adminlist">admin vlastníků galerií</a>    
+                        }
+                        
+                        @if (session.OwnerId > 0)
+                        {
+                            <a href="/admin/index">admin galerie</a>    
+                        }
+                    </p>
+                }
+                else 
+                {
+                    <form class="navbar-form pull-right" action="/account/logon" method="POST">
+                        <input class="input-mini" type="text" placeholder="Email" name="email">
+                        <input class="input-mini" type="password" placeholder="Password" name="password">
+                        <button type="submit" class="btn btn-mini">Přihlásit</button>
+                        <a href="/account/register" class="btn btn-mini">Registrace</a>
+                    </form>
+
+                    <form action="@Url.Content("~/api/auth/googleopenid")" method="POST" class="pull-right">
+                        <input type="image" src="@Url.Content("~/Content/img/ico-gplus.png")" alt="Přihlásit se účtem na Google">
+                    </form>
+
+                    <a href="@Url.Content("~/api/auth/facebook")" class="pull-right">
+                        <img src="@Url.Content("/Content/img/ico-facebook.png")" alt="Přihlásit se účtem na Facebooku" />
+                    </a>
+                }
+            }
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <!-- /.navbar-inner -->
+</div>
+<!-- /.navbar -->

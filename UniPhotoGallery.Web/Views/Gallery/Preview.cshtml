@@ -1,0 +1,35 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.UserGallery.Show 
+
+@{
+    var breadcrumb = "";
+    var root = "<a href=\"/" + Model.OwnerSeoName + "/gallery\">Hlavní stránka</a>";
+    var parentGallery = "<a href=\"/" + @Model.OwnerSeoName + "/gallery/show/" + @Model.ParentGalleryId + "\">zpět na " + @Model.ParentGalleryName + "</a>";
+
+    breadcrumb = Model.IsParentRootGallery ? root : string.Format("{0} >> {1}", root, parentGallery);
+
+    ViewBag.Breadcrumb = breadcrumb;
+}
+
+<h1>@Model.Gallery.Name</h1>
+
+<div class="childGalleries">
+    @if (Model.ChildGalleries != null && Model.ChildGalleries.Count > 0)
+    {
+        foreach (var childGal in Model.ChildGalleries)
+        {
+            <div class="childGallery">
+                @if (!string.IsNullOrEmpty(childGal.ThumbUrl))
+                {
+                    <a href="/@Model.OwnerSeoName/gallery/show/@childGal.GalleryId" id="childGalleryLink_@childGal.GalleryId">
+                        <img width="200" height="200" id="childGalleryImage_@childGal.GalleryId" src="@childGal.ThumbUrl" />
+                    </a>
+                }
+                
+                <script>
+                    var gal_@childGal.GalleryId = @Html.Raw(childGal.ThumbUrlsJson)
+                </script>
+            </div>
+        }
+    }
+</div> 
+

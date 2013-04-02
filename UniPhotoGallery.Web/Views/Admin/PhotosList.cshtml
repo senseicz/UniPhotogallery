@@ -1,0 +1,29 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.PhotosList
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Seznam fotek</h2>
+
+@if(Model != null && Model.Photos != null && Model.Photos.Any())
+{
+    foreach (var photo in Model.Photos)
+    {
+        <div>
+            @photo.PhotoId | @photo.FileName | 
+            @if(photo.PhotoTypes != null)
+            {
+                @:[
+                foreach (var photoType in photo.PhotoTypes)
+                {
+                    <a href="/admin/photolistremovephototype?photoId=@photo.PhotoId&photoTypeId=@photoType.PhotoTypeId">
+                        @photoType.SystemName 
+                    </a>
+                    <text>&nbsp;</text>
+                }
+                @:]
+            }
+        </div>
+    }
+}

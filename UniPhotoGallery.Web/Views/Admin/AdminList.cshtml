@@ -1,0 +1,42 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.Admin.AdminList
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Administrace vlastníků galerií</h2>
+
+@if (Model.Users != null && Model.Users.Any())
+{
+    <table>
+        <tr>
+            <td>Jméno</td>
+            <td>Email</td>
+            <td>Akce</td>
+        </tr>
+        
+        @foreach (var user in Model.Users)
+        {
+            bool isOwner = Model.Owners != null && Model.Owners.Any(o => o.UserId == user.Id);
+            <tr>
+                <td>
+                    @user.UserName
+                </td>
+                <td>
+                    @user.Email
+                </td>
+                <td>
+                    @if (!isOwner)
+                    {
+                        <a href="/admin/createowner/@user.Id">vytvořit</a>
+                    }
+                </td>
+            </tr>            
+        }
+    </table>
+}
+else
+{
+    <p>V systému nejsou registrovaní žádní uživatelé.</p>
+}
+
+

@@ -1,0 +1,53 @@
+﻿@model UniPhotoGallery.DomainModel.ViewModels.UserGallery.Show 
+
+@section AdditionalCSS
+{
+    @Styles.Render("~/Content/SliderCss")    
+}
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.royalslider.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $('#show-gallery').royalSlider({
+                fullscreen: { enabled: true, nativeFS: true },
+                thumbs: { spacing: 10, arrowsAutoHide: true, orientation: 'vertical' },
+                controlNavigation: 'thumbnails',
+                thumbsFitInViewport: false,
+                autoScaleSlider: true,
+                autoScaleSliderWidth: 1000,
+                autoScaleSliderHeight: 750,
+                loop: false,
+                numImagesToPreload: 4,
+                arrowsNavAutohide: true,
+                arrowsNavHideOnTouch: true,
+                keyboardNavEnabled: true
+            });
+        });
+       
+    </script>
+}
+
+@{
+    var breadcrumb = "";
+    var root = "<a href=\"/" + Model.OwnerSeoName + "/gallery\">Hlavní stránka</a>";
+    var parentGallery = "<a href=\"/" + @Model.OwnerSeoName + "/gallery/show/" + @Model.ParentGalleryId + "\">zpět na " + @Model.ParentGalleryName + "</a>";
+
+    breadcrumb = Model.IsParentRootGallery ? root : string.Format("{0} >> {1}", root, parentGallery);
+
+    ViewBag.Breadcrumb = breadcrumb;
+}
+
+@if (Model.Gallery.PhotosCount > 0)
+{
+    <h1>@Model.Gallery.Name</h1>
+    <div id="show-gallery" class="rsMinW royalSlider">
+        @foreach (var photo in Model.Gallery.GalleryPhotos.OrderBy(p => p.Order))
+        {
+            <a class="rsImg" href="@photo.Photo.GetPhotoUrl("w1000")" data-rsBigImg="@photo.Photo.GetPhotoUrl("w1000")">@photo.Photo.Description
+                <img width="100" class="rsTmb" src="@photo.Photo.GetPhotoUrl("adminthumb")" />
+            </a>
+        }
+    </div>
+}

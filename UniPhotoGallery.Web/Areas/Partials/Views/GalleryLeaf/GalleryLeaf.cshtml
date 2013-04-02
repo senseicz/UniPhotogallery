@@ -1,0 +1,25 @@
+﻿@using UniPhotoGallery.DomainModel.Domain
+@model List<Gallery>
+
+<ul>
+    @foreach(var galerie in Model.OrderBy(m => m.Order))
+    {
+        <li>
+            @galerie.Name 
+            @if(galerie.GalleryType == (int)GalleryTypes.Preview)
+            {
+                <span>
+                    [náhledová galerie]
+                </span>
+            }
+            else
+            {
+                <span>[počet fotek: @galerie.PhotosCount]</span>
+            }
+            
+            <a href="/Admin/GalleryEdit/@galerie.GalleryId">editovat</a> | 
+            <a href="/admin/DeleteGallery/@galerie.GalleryId" onclick="return confirm('Skutečně smazat?')">smazat</a>
+            @Html.Action("GalleryLeaf", "GalleryLeaf", new { area = "Partials", leafId = galerie.GalleryId })
+        </li>
+    }
+</ul>
