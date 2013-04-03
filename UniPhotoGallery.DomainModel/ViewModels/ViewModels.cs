@@ -295,8 +295,17 @@ namespace UniPhotoGallery.DomainModel.ViewModels
     [Serializable]
     public class ProcessUploadedPhotosVM : BaseViewModel
     {
+        private readonly string _currentPath;
+
+        public string CurrentPath { get { return _currentPath; } }
         public List<OrigPhotosWaiting> PhotosWaiting { get; set; }
+        public List<OrigPhotoSubDirectory> SubDirs { get; set; } 
         public List<Gallery> Galleries { get; set; }
+
+        public ProcessUploadedPhotosVM(string currentPath)
+        {
+            _currentPath = currentPath;
+        }
     }
 
     [Serializable]
@@ -310,4 +319,10 @@ namespace UniPhotoGallery.DomainModel.ViewModels
         public string ThumbPath { get; set; }
     }
 
+    [Serializable]
+    public class OrigPhotoSubDirectory
+    {
+        public string DirName { get; set; }
+        public string FullParentPath { get; set; }
+    }
 }

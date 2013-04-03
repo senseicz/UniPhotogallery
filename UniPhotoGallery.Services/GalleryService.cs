@@ -279,6 +279,8 @@ namespace UniPhotoGallery.Services
             if (photos != null && photos.Any())
             {
                 _galleryRepo.AddPhotosToGallery(photos);
+                var galleryId = photos[0].GalleryId;
+                _baseService.Cacher.RemoveAll(new[] { GALLERIES_ALL, GALLERY_BY_ID.Fmt(galleryId) });
             }
         }
 

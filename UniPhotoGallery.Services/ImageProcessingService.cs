@@ -246,6 +246,11 @@ namespace UniPhotoGallery.Services
 
         private void SaveImage(Bitmap thumbImage, string targetDir, string targetFileName)
         {
+            if (targetFileName.Contains(@"\"))
+            {
+                targetFileName = targetFileName.Substring(targetFileName.LastIndexOf(@"\") + 1);
+            }
+            
             // create directory if it doesn't exist
             var di = new DirectoryInfo(targetDir);
             if (!di.Exists)

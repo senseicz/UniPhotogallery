@@ -208,6 +208,7 @@
     <Content Include="Content\img\daf.jpg" />
     <Content Include="Content\img\document_add_24.png" />
     <Content Include="Content\img\document_add_32.png" />
+    <Content Include="Content\img\folder_icon.png" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\ico-facebook.png" />

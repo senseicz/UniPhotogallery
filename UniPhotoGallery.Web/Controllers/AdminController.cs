@@ -88,20 +88,21 @@ namespace UniPhotoGallery.Controllers
 
         #region Process uploaded photos
 
-        public ActionResult ProcessUploadedPhotos()
+        public ActionResult ProcessUploadedPhotos(string path)
         {
-            var model = TempData["result"] as ProcessUploadedPhotosVM ?? new ProcessUploadedPhotosVM();
+            var model = TempData["result"] as ProcessUploadedPhotosVM ?? new ProcessUploadedPhotosVM(path);
 
-            model.PhotosWaiting = PhotoService.GetWaitingPhotos(UserSession.Owner);
+            model.PhotosWaiting = PhotoService.GetWaitingPhotos(UserSession.Owner, model.CurrentPath);
+            model.SubDirs = PhotoService.GetSubDirs(UserSession.Owner, model.CurrentPath);
             model.Galleries = GalleryService.GetGalleriesForUser(UserSession.OwnerId);
 
             return View(model);
         }
         
         [HttpPost]
-        public ActionResult ProcessUploadedPhotosCustom()
+        public ActionResult ProcessUploadedPhotosCustom(string currentPath)
         {
-            var model = new ProcessUploadedPhotosVM();
+            var model = new ProcessUploadedPhotosVM(currentPath);
             var request = Request.Form;
 
             if (request.Keys.Count > 0)
@@ -131,7 +132,7 @@ namespace UniPhotoGallery.Controllers
                         }
 
                         GalleryService.AddPhotosToGallery(galleryId, photoIdsArr);
-                        var photosAdded = PhotoService.ProcessUploadedPhoto(photoIdsArr);
+                        var photosAdded = PhotoService.ProcessUploadedPhoto(photoIdsArr, currentPath);
 
                         var gallery = GalleryService.GetById(galleryId);
 

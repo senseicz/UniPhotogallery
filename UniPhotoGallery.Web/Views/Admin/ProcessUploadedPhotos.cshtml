@@ -17,29 +17,71 @@
 
 <div class="two-cols ui-widget ui-helper-clearfix">
     <div class="col1">
-        <div class="container h700">
-            @if (Model.PhotosWaiting != null && Model.PhotosWaiting.Count > 0)
+        <div class="path">
+            <a href="/admin/processuploadedphotos?path=">root</a>
+            / 
+            @if (!string.IsNullOrEmpty(Model.CurrentPath))
             {
-                <ul id="photos" class="photoContainer ui-helper-reset ui-helper-clearfix">
-                    @foreach (var photo in Model.PhotosWaiting)
+                if (Model.CurrentPath.Contains(@"\"))
+                {
+                    var pathChunks = Model.CurrentPath.Split(new [] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < pathChunks.Length; i++)
+                    {
+                        var parentPath = "";
+                        for (int j = 0; j <= i; j++)
+                        {
+                            parentPath = parentPath + @"\" + pathChunks[j];
+                        }
+
+                        parentPath = parentPath.TrimStart(new[] {'\\'});
+                        
+                        <a href="/admin/processuploadedphotos?path=@parentPath">@pathChunks[i]</a> @:/
+                    }
+                }
+                else
+                {
+                    <a href="/admin/processuploadedphotos?path=@Model.CurrentPath">@Model.CurrentPath</a>
+                }
+            }
+        </div>
+
+        <div class="container h700">
+            <ul id="photos" class="photoContainer ui-helper-reset ui-helper-clearfix">
+                @if (Model.PhotosWaiting != null && Model.PhotosWaiting.Any())
+                {
+                    foreach (var photo in Model.PhotosWaiting)
                     {
                         <li class="ui-widget-content ui-corner-tr" data-photoId="@photo.PhotoId">
                             <img src="@photo.ThumbPath"/>
                         </li>
                     }
-                </ul>
+                }
+            </ul>
+        </div>
+        
+        <div class="path">
+            @if (Model.SubDirs != null && Model.SubDirs.Any())
+            {
+                foreach (var subDir in Model.SubDirs)
+                {
+                    <a href="/admin/processuploadedphotos?path=@subDir.FullParentPath">@subDir.DirName</a>
+                }
             }
         </div>
     </div>
 
     <div class="col2">
         <form method="POST" action="/admin/ProcessUploadedPhotosCustom" id="processUploadedPhotosForm">
+            @Html.HiddenFor(p => p.CurrentPath);
+            
             @if (Model.Galleries != null && Model.Galleries.Count > 0)
             {
                 var rootGallery = Model.Galleries.First(g => g.GalleryType == (int)GalleryTypes.Root);
     
                 <p><strong>@rootGallery.Name</strong></p>
     
+                
+                
                 <div class="dropContainer">
                     @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new { area = "Partials", leafId = rootGallery.GalleryId })
                 </div>

@@ -25,8 +25,9 @@ namespace UniPhotoGallery.Services
         string CreateTypeOfPhoto(Photo photo, PhotoType photoType);
         string GetPhotoURL(int photoId, string typeName);
 
-        List<OrigPhotosWaiting> GetWaitingPhotos(Owner owner);
-        int ProcessUploadedPhoto(int[] photoIds);
+        List<OrigPhotosWaiting> GetWaitingPhotos(Owner owner, string subDir);
+        List<OrigPhotoSubDirectory> GetSubDirs(Owner owner, string subDir);
+        int ProcessUploadedPhoto(int[] photoIds, string currentUploadPath);
 
         #region PhotoType
         bool PhotoTypeExist(Photo photo, PhotoType photoType);
@@ -295,7 +296,7 @@ namespace UniPhotoGallery.Services
             }
         }
 
-        public int ProcessUploadedPhoto(int[] photoIds)
+        public int ProcessUploadedPhoto(int[] photoIds, string currentUploadPath)
         {
             var processedPhotos = 0;
             foreach (var photoId in photoIds)
@@ -306,7 +307,16 @@ namespace UniPhotoGallery.Services
                     var origPhotoType = _photoRepo.GetBySystemName("orig");
                     var uploadPhotoType = _photoRepo.GetBySystemName("upload");
 
-                    var uploadPath = string.Format("{0}/{1}/{2}/{3}", photo.BasePhotoVirtualPath, photo.Owner.OwnerDirectory, uploadPhotoType.Directory, photo.FileName);
+                    string uploadPath;
+                    if (!string.IsNullOrEmpty(currentUploadPath))
+                    {
+                        uploadPath = string.Format("{0}/{1}/{2}/{3}/{4}", photo.BasePhotoVirtualPath, photo.Owner.OwnerDirectory, uploadPhotoType.Directory, currentUploadPath, photo.FileName);
+                    }
+                    else
+                    {
+                        uploadPath = string.Format("{0}/{1}/{2}/{3}", photo.BasePhotoVirtualPath, photo.Owner.OwnerDirectory, uploadPhotoType.Directory,  photo.FileName);
+                    }
+                    
                     var uploadPhysicalPath = HttpContext.Current.Server.MapPath(uploadPath);
 
                     var origPath = string.Format("{0}/{1}/{2}/{3}", photo.BasePhotoVirtualPath, photo.Owner.OwnerDirectory, origPhotoType.Directory, photo.FileName);
@@ -330,7 +340,7 @@ namespace UniPhotoGallery.Services
             return processedPhotos;
         }
 
-        public List<OrigPhotosWaiting> GetWaitingPhotos(Owner owner)
+        public List<OrigPhotosWaiting> GetWaitingPhotos(Owner owner, string subDir)
         {
             var retColl = new List<OrigPhotosWaiting>();
             var currentUserDir = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}",
@@ -338,6 +348,11 @@ namespace UniPhotoGallery.Services
                                                                     owner.OwnerDirectory ));
 
             var uploadPath = string.Format(@"{0}\{1}", currentUserDir, _baseService.AppConfig.UploadDirName);
+
+            if (!string.IsNullOrEmpty(subDir))
+            {
+                uploadPath = string.Format(@"{0}\{1}", uploadPath, subDir);
+            }
 
             var files = GetFilesInDirectory(uploadPath);
             if (files.Length > 0)
@@ -369,6 +384,9 @@ namespace UniPhotoGallery.Services
                         photoId = InsertPhoto(fotka);
                         fotka.PhotoId = photoId;
                         
+                        //hack s podadresarema
+                        fotka.FileName = subDir + @"\" + fotka.FileName;
+
                         try
                         {
                             ImageProcessingService.ResizeImage(fotka, uploadType, adminThumb);
@@ -385,7 +403,7 @@ namespace UniPhotoGallery.Services
                         photoId = photoAlreadyInDb.PhotoId;
                     }
 
-                    var photoWaiting = new OrigPhotosWaiting { FileName = fileName, UploadedDate = files[i].CreationTime, PhotoId = photoId };
+                    var photoWaiting = new OrigPhotosWaiting { FileName = fileName, UploadedDate = files[i].CreationTime, PhotoId = photoId};
 
                     //X,Y dimensions of originally uploaded photo - uncomment if you need to diplay it on ProcessUploadPhotos view.
                     
@@ -400,6 +418,37 @@ namespace UniPhotoGallery.Services
                     retColl.Add(photoWaiting);
                 }
             }
+            return retColl;
+        }
+
+        public List<OrigPhotoSubDirectory> GetSubDirs(Owner owner, string subDir)
+        {
+            var currentUserDir = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}",
+                                                                    _baseService.AppConfig.GalleryImagesRoot,
+                                                                    owner.OwnerDirectory));
+
+            var uploadPath = string.Format(@"{0}\{1}", currentUserDir, _baseService.AppConfig.UploadDirName);
+
+            if (!string.IsNullOrEmpty(subDir))
+            {
+                uploadPath = string.Format(@"{0}\{1}", uploadPath, subDir);
+            }
+
+            var dirInfo = new DirectoryInfo(uploadPath);
+            var retColl = new List<OrigPhotoSubDirectory>();
+            var subDirs = dirInfo.GetDirectories();
+
+            var innerSubDir = string.IsNullOrEmpty(subDir) ? "" : subDir + @"\";
+
+            if (subDirs.Any())
+            {
+                subDirs.ToList().ForEach( item => retColl.Add(new OrigPhotoSubDirectory
+                               {
+                                   DirName = item.Name,
+                                   FullParentPath = innerSubDir + item.Name
+                               }));
+            }
+
             return retColl;
         }
 
@@ -530,8 +579,8 @@ namespace UniPhotoGallery.Services
                 di.Create();
             }
 
-            var files = di.GetFiles();
-
+            var extensions = new[] { ".jpg", ".png" };
+            FileInfo[] files = di.EnumerateFiles().Where(f => extensions.Contains(f.Extension.ToLower())).ToArray();
             return files;
         }
 

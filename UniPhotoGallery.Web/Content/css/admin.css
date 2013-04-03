@@ -212,6 +212,15 @@ li span.hoverOrig img {width: 450px; max-height: 650px; position: relative; z-in
 .addToGalleryButton{ /* float: right; */cursor: pointer; }
 ul, li{ list-style-type: none; }
 
+.path {
+    font-size: 80%;
+    padding: 5px;
+}
+
+/*background:url("/content/img/folder_icon.png") no-repeat top center;
+    background-size: 70px 60px;
+    position: relative;*/
+
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
