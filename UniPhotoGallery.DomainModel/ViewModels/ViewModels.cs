@@ -295,9 +295,9 @@ namespace UniPhotoGallery.DomainModel.ViewModels
     [Serializable]
     public class ProcessUploadedPhotosVM : BaseViewModel
     {
-        private readonly string _currentPath;
+        private string _currentPath;
 
-        public string CurrentPath { get { return _currentPath; } }
+        public string CurrentPath { get { return _currentPath; } set { _currentPath = value; } }
         public List<OrigPhotosWaiting> PhotosWaiting { get; set; }
         public List<OrigPhotoSubDirectory> SubDirs { get; set; } 
         public List<Gallery> Galleries { get; set; }

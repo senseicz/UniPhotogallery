@@ -36,8 +36,9 @@ namespace UniPhotoGallery.Services
         PhotoType GetByPhotoTypeName(string name);
         int InsertPhotoType(PhotoType type);
         void UpdatePhotoType(PhotoType type);
-
         #endregion
+
+        void DeleteUploadSubdirIfEmpty(string path);
     }
 
     public class PhotoService : IPhotoService
@@ -298,15 +299,15 @@ namespace UniPhotoGallery.Services
 
         public int ProcessUploadedPhoto(int[] photoIds, string currentUploadPath)
         {
+            var origPhotoType = _photoRepo.GetBySystemName("orig");
+            var uploadPhotoType = _photoRepo.GetBySystemName("upload");
+
             var processedPhotos = 0;
             foreach (var photoId in photoIds)
             {
                 var photo = GetPhoto(photoId);
-                if (photo != null)
+                if (photo != null && PhotoTypeExist(photo, uploadPhotoType))
                 {
-                    var origPhotoType = _photoRepo.GetBySystemName("orig");
-                    var uploadPhotoType = _photoRepo.GetBySystemName("upload");
-
                     string uploadPath;
                     if (!string.IsNullOrEmpty(currentUploadPath))
                     {
@@ -359,6 +360,7 @@ namespace UniPhotoGallery.Services
             {
                 var uploadType = _photoRepo.GetBySystemName("upload");
                 var adminThumb = _photoRepo.GetBySystemName("adminthumb");
+                uploadType.Directory = uploadType.Directory + @"\" + subDir;
 
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -383,9 +385,6 @@ namespace UniPhotoGallery.Services
 
                         photoId = InsertPhoto(fotka);
                         fotka.PhotoId = photoId;
-                        
-                        //hack s podadresarema
-                        fotka.FileName = subDir + @"\" + fotka.FileName;
 
                         try
                         {
@@ -511,6 +510,11 @@ namespace UniPhotoGallery.Services
         #endregion
 
         #region I/O operations
+        public void DeleteUploadSubdirIfEmpty(string path)
+        {
+            throw new NotImplementedException("Sorry, not implemented yet");
+        }
+
         private static void MoveFile(string sourceFileName, string targetFileName)
         {
             var srcFI = new FileInfo(sourceFileName);

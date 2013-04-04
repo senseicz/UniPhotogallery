@@ -104,7 +104,7 @@ namespace UniPhotoGallery.DomainModel.Domain
 
         [Ignore]
         public string BasePhotoVirtualPath { get; set; }
-        
+
         public string GetPhotoUrl(int photoTypeId)
         {
             if (PhotoTypes != null && PhotoTypes.Any(t => t.PhotoTypeId == photoTypeId))

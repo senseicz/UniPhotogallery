@@ -136,7 +136,10 @@ namespace UniPhotoGallery.Controllers
 
                         var gallery = GalleryService.GetById(galleryId);
 
-                        model.AddOKMessage(string.Format("Přidáno {0} fotografií do galerie {1}", photosAdded, gallery.Name));
+                        if (photosAdded > 0)
+                        {
+                            model.AddOKMessage(string.Format("Přidáno {0} fotografií do galerie {1}", photosAdded, gallery.Name));
+                        }
                     }
                 }
             }

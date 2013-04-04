@@ -259,15 +259,20 @@ namespace UniPhotoGallery.Services
             
             if (photoIds != null && photoIds.Length > 0)
             {
+                var gallery = GetById(galleryId);
                 var galleryPhotos = new List<GalleryPhoto>();
                 for (int i = 0; i < photoIds.Length; i++)
                 {
-                    galleryPhotos.Add(new GalleryPhoto
-                        {
-                            GalleryId = galleryId,
-                            Order = ++maxOrder,
-                            PhotoId = photoIds[i]
-                        });
+                    //check whether photois already in gallery, if so, do NOT add it again.
+                    if (gallery.GalleryPhotos.All(p => p.PhotoId != photoIds[i]))
+                    {
+                        galleryPhotos.Add(new GalleryPhoto
+                            {
+                                GalleryId = galleryId,
+                                Order = ++maxOrder,
+                                PhotoId = photoIds[i]
+                            });
+                    }
                 }
 
                 AddPhotosToGallery(galleryPhotos);
@@ -280,7 +285,8 @@ namespace UniPhotoGallery.Services
             {
                 _galleryRepo.AddPhotosToGallery(photos);
                 var galleryId = photos[0].GalleryId;
-                _baseService.Cacher.RemoveAll(new[] { GALLERIES_ALL, GALLERY_BY_ID.Fmt(galleryId) });
+                var gallery = GetById(galleryId);
+                _baseService.Cacher.RemoveAll(new[] { GALLERIES_ALL, GALLERY_BY_ID.Fmt(galleryId), GALLERIES_BY_OWNERID.Fmt(gallery.OwnerId)});
             }
         }
 

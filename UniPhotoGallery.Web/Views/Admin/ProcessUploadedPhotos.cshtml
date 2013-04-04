@@ -72,15 +72,13 @@
 
     <div class="col2">
         <form method="POST" action="/admin/ProcessUploadedPhotosCustom" id="processUploadedPhotosForm">
-            @Html.HiddenFor(p => p.CurrentPath);
+            @Html.HiddenFor(p => p.CurrentPath)
             
             @if (Model.Galleries != null && Model.Galleries.Count > 0)
             {
                 var rootGallery = Model.Galleries.First(g => g.GalleryType == (int)GalleryTypes.Root);
     
                 <p><strong>@rootGallery.Name</strong></p>
-    
-                
                 
                 <div class="dropContainer">
                     @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new { area = "Partials", leafId = rootGallery.GalleryId })
