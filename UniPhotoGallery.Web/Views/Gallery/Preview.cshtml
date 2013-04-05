@@ -10,6 +10,11 @@
     ViewBag.Breadcrumb = breadcrumb;
 }
 
+<script type="text/javascript">
+    var previewGalleryNamesArray = new Array();
+    var previewGalleryImagesArray = new Array();
+</script>
+
 <h1>@Model.Gallery.Name</h1>
 
 <div class="childGalleries">
@@ -17,19 +22,81 @@
     {
         foreach (var childGal in Model.ChildGalleries)
         {
-            <div class="childGallery">
+            <div class="childGallery img-polaroid">
                 @if (!string.IsNullOrEmpty(childGal.ThumbUrl))
                 {
                     <a href="/@Model.OwnerSeoName/gallery/show/@childGal.GalleryId" id="childGalleryLink_@childGal.GalleryId">
-                        <img width="200" height="200" id="childGalleryImage_@childGal.GalleryId" src="@childGal.ThumbUrl" />
+                        <img width="200" height="200" id="gal_@childGal.GalleryId" src="@childGal.ThumbUrl" />
                     </a>
                 }
                 
+                <span>@childGal.Name</span>
+
                 <script>
-                    var gal_@childGal.GalleryId = @Html.Raw(childGal.ThumbUrlsJson)
+                    previewGalleryNamesArray.push('gal_@childGal.GalleryId');
+                    previewGalleryImagesArray.push(@Html.Raw(childGal.ThumbUrlsJson));
                 </script>
             </div>
         }
     }
 </div> 
+
+<div class="clearfix"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var currentGalOrder = 0;
+        var imageOrderForGallery = new Array();
+        var interval;
+
+        function setNextBGImage() {
+            var galleryImages = previewGalleryImagesArray[currentGalOrder];
+            if (galleryImages == null || galleryImages.length == 0) {
+                currentGalOrder++;
+                if (currentGalOrder >= previewGalleryNamesArray.length) {
+                    currentGalOrder = 0;
+                }
+                setNextBGImage();
+            } else {
+                var inGalleryOrder = imageOrderForGallery[currentGalOrder];
+                if (galleryImages.length - 1 == inGalleryOrder) {
+                    inGalleryOrder = 0;
+                } else {
+                    inGalleryOrder++;
+                }
+
+                var imageUrl = galleryImages[inGalleryOrder].ImagePath;
+                imageOrderForGallery[currentGalOrder] = inGalleryOrder;
+
+                var galName = previewGalleryNamesArray[currentGalOrder];
+                changeImageSource(galName, imageUrl);
+
+                currentGalOrder++;
+                if (currentGalOrder >= previewGalleryNamesArray.length) {
+                    currentGalOrder = 0;
+                }
+            }
+        }
+
+        function changeImageSource(elemName, newUrl) {
+            $('#' + elemName).stop().animate({ opacity: '0' }, function () {
+                $(this).attr('src', newUrl + '?' + Math.floor(Math.random() * (10 * 100)));
+            }).load(function() {
+                $(this).stop().animate({ opacity: '1' });
+            });
+
+            return false;
+        }
+
+        $(function () {
+            for (var i = 0; i < previewGalleryNamesArray.length; i++)
+            {
+                imageOrderForGallery.push(0);
+            }
+
+            interval = setInterval(function() {setNextBGImage();}, 2000);
+        });
+    </script>
+}
 

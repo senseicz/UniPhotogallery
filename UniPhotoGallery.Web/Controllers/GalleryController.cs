@@ -148,12 +148,16 @@ namespace UniPhotoGallery.Controllers
 
         private string GetPreviewUrlsJson(Gallery childGallery)
         {
-            var retList = new Dictionary<string, string>();
+            var retList = new List<PreviewImage>();
             if (childGallery.PreviewPhotos != null && childGallery.PreviewPhotos.Any())
             {
                 foreach (var previewPhoto in childGallery.PreviewPhotos)
                 {
-                    retList.Add(previewPhoto.PhotoId.ToString(), PhotoService.GetPhotoURL(previewPhoto.PhotoId, "square200"));
+                    retList.Add(new PreviewImage
+                        {
+                            ImageId = previewPhoto.PhotoId, 
+                            ImagePath = PhotoService.GetPhotoURL(previewPhoto.PhotoId, "square200")
+                        });
                 }
             }
 

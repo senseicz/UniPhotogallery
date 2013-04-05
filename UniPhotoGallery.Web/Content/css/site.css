@@ -194,7 +194,27 @@ a:link .galleryName, a:visited .galleryName, a:hover .galleryName, a:active .gal
     padding: 10px;
 }
 
+.childGallery {
+    float: left;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    padding: 7px;
+    width: 200px;
+    height: 230px;
+    position: relative;
+}
 
+.childGallery span {
+    font-size: 120%;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: absolute;
+    bottom: 8px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+}
 
    
 

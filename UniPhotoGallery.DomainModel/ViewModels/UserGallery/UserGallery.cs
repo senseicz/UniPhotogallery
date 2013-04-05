@@ -39,6 +39,12 @@ namespace UniPhotoGallery.DomainModel.ViewModels.UserGallery
         public string ThumbUrlsJson { get; set; } 
     }
 
+    public class PreviewImage
+    {
+        public int ImageId { get; set; }
+        public string ImagePath { get; set; }
+    }
+
     public class Show
     {
         public string OwnerSeoName { get; set; }
