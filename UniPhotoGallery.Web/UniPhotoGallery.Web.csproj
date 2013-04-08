@@ -177,6 +177,7 @@
     <Compile Include="App_Start\AppHost.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\WebServiceExamples.cs" />
+    <Compile Include="Areas\Partials\Controllers\GalleryBreadcrumbController.cs" />
     <Compile Include="Areas\Partials\Controllers\GalleryLeafController.cs" />
     <Compile Include="Areas\Partials\PartialsAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -296,6 +297,7 @@
     <Content Include="Scripts\jquery.royalslider.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Areas\Partials\Views\GalleryBreadcrumb\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

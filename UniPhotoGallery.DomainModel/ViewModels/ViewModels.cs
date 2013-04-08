@@ -325,4 +325,12 @@ namespace UniPhotoGallery.DomainModel.ViewModels
         public string DirName { get; set; }
         public string FullParentPath { get; set; }
     }
+
+    public class GalleryBreadcrumb
+    {
+        public int GalleryId { get; set; }
+        public string GalleryName { get; set; }
+        public string UserBaseDir { get; set; }
+        public string ViewType { get; set; }
+    }
 }

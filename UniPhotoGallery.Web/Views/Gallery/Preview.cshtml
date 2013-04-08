@@ -17,6 +17,8 @@
 
 <h1>@Model.Gallery.Name</h1>
 
+@Html.Action("Index", "GalleryBreadcrumb", new { area = "Partials", breadcrumb = Model.Gallery.Breadcrumb })
+
 <div class="childGalleries">
     @if (Model.ChildGalleries != null && Model.ChildGalleries.Count > 0)
     {

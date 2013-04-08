@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
-using UniPhotoGallery.DomainModel;
 using UniPhotoGallery.DomainModel.Domain;
 
 namespace UniPhotoGallery.Services
@@ -110,15 +109,16 @@ namespace UniPhotoGallery.Services
 
         public void ResizeImage(Photo photo, PhotoType fromType, PhotoType targetType, string savePath)
         {
-            var thumb = DoResizeImage(photo, fromType, targetType);
-
-            if(string.IsNullOrEmpty(savePath))
+            using (var thumb = DoResizeImage(photo, fromType, targetType))
             {
-                SaveImage(thumb, photo, targetType);
-            }
-            else
-            {
-                SaveImage(thumb, savePath, photo.FileName);
+                if (string.IsNullOrEmpty(savePath))
+                {
+                    SaveImage(thumb, photo, targetType);
+                }
+                else
+                {
+                    SaveImage(thumb, savePath, photo.FileName);
+                }
             }
         }
 

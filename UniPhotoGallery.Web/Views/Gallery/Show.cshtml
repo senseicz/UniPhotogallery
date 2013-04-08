@@ -42,6 +42,7 @@
 @if (Model.Gallery.PhotosCount > 0)
 {
     <h1>@Model.Gallery.Name</h1>
+    @Html.Action("Index", "GalleryBreadcrumb", new { area = "Partials", breadcrumb = Model.Gallery.Breadcrumb })
     <div id="show-gallery" class="rsMinW royalSlider">
         @foreach (var photo in Model.Gallery.GalleryPhotos.OrderBy(p => p.Order))
         {

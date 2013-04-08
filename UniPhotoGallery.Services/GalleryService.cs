@@ -6,6 +6,7 @@ using ServiceStack.Text;
 using UniPhotoGallery.Data;
 using UniPhotoGallery.DomainModel.Domain;
 using System.Web;
+using UniPhotoGallery.DomainModel.ViewModels;
 using UniPhotoGallery.DomainModel.ViewModels.UserGallery;
 
 namespace UniPhotoGallery.Services
@@ -36,10 +37,11 @@ namespace UniPhotoGallery.Services
 
         int InsertOwner(Owner owner);
 
-        #region GalleryPhoto
+        List<GalleryBreadcrumb> GenerateGalleryBreadcrumb(Gallery gallery);
+
+            #region GalleryPhoto
         List<GalleryPhoto> GetGalleryPhotos(Gallery gallery);
         string GetPreviewGalleryCyclerJson(int galleryId);
-
         #endregion
     }
     
@@ -332,6 +334,44 @@ namespace UniPhotoGallery.Services
             
             _baseService.Cacher.RemoveAll(new List<string> { GALLERIES_ALL, GALLERIES_BY_OWNERID.Fmt(newOwnerId) });
             return newOwnerId;
+        }
+
+        public List<GalleryBreadcrumb> GenerateGalleryBreadcrumb(Gallery gallery)
+        {
+            var retColl = new List<GalleryBreadcrumb>();
+            var currentGallery = gallery;
+            var owner = UserService.GetOwnerById(gallery.OwnerId);
+            var baseDir = owner.OwnerDirectory;
+
+            while (currentGallery.GalleryType != (int)GalleryTypes.Root)
+            {
+                retColl.Add(new GalleryBreadcrumb
+                    {
+                        GalleryId = currentGallery.GalleryId,
+                        GalleryName = currentGallery.Name,
+                        UserBaseDir = baseDir,
+                        ViewType = currentGallery.GalleryType == (int) GalleryTypes.Content ? "show" : "preview"
+                    });
+
+                if (currentGallery.ParentId.HasValue)
+                {
+                    currentGallery = GetById(currentGallery.ParentId.Value);
+                }
+            } 
+
+            //now currentGallery must be root, but check just to be sure:
+            if (currentGallery.GalleryType == (int) GalleryTypes.Root)
+            {
+                retColl.Add(new GalleryBreadcrumb
+                {
+                    GalleryId = currentGallery.GalleryId,
+                    GalleryName = currentGallery.Name,
+                    UserBaseDir = baseDir,
+                    ViewType = currentGallery.GalleryType == (int)GalleryTypes.Content ? "show" : "preview"
+                });
+            }
+
+            return retColl;
         }
 
         #region GalleryPhoto

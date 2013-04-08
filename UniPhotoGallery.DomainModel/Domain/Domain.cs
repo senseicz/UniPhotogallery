@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ServiceStack.DataAnnotations;
+using UniPhotoGallery.DomainModel.ViewModels;
 
 namespace UniPhotoGallery.DomainModel.Domain
 {
@@ -65,6 +66,9 @@ namespace UniPhotoGallery.DomainModel.Domain
                 return 0;
             }
         }
+
+        [Ignore]
+        public List<GalleryBreadcrumb> Breadcrumb { get; set; }
     }
 
     public class GalleryPhoto

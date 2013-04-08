@@ -59,6 +59,8 @@ namespace UniPhotoGallery.Controllers
 
                 if (gallery.PhotosCount > 0)
                 {
+                    gallery.Breadcrumb = GalleryService.GenerateGalleryBreadcrumb(gallery);
+                    
                     var owner = UserService.GetOwnerById(gallery.OwnerId);
 
                     retModel.OwnerSeoName = owner.OwnerDirectory;
@@ -99,6 +101,8 @@ namespace UniPhotoGallery.Controllers
                     return RedirectToAction("Show", "Gallery", new { Id });
                 }
 
+                gallery.Breadcrumb = GalleryService.GenerateGalleryBreadcrumb(gallery);
+                
                 var owner = UserService.GetOwnerById(gallery.OwnerId);
 
                 retModel.OwnerSeoName = owner.OwnerDirectory;

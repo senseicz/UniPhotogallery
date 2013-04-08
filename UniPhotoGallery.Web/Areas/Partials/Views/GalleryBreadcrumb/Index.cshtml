@@ -1,0 +1,15 @@
+﻿@model List<UniPhotoGallery.DomainModel.ViewModels.GalleryBreadcrumb>
+
+@if (Model != null && Model.Any())
+{
+    <p class="breadcrumb">
+        @for (int i = Model.Count - 1; i >= 0; i--)
+        {
+            <a href="/@Model[i].UserBaseDir/gallery/@Model[i].ViewType/@Model[i].GalleryId">@Model[i].GalleryName</a> 
+            if(i > 0)
+            { 
+                @:&rsaquo;&rsaquo; 
+            }
+        }
+    </p>
+}
