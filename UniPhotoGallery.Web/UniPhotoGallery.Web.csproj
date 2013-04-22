@@ -353,6 +353,7 @@
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Gallery\Preview.cshtml" />
     <Content Include="Views\Gallery\Show.cshtml" />
+    <Content Include="Views\Gallery\NotReady.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -34,7 +34,7 @@ namespace UniPhotoGallery.Controllers
             var response = UserAuthRepo.CreateUserAuth(user, model.Password);
             var authResponse = AuthService.Authenticate(new Auth {UserName = model.UserName, Password = model.Password, RememberMe = true});
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

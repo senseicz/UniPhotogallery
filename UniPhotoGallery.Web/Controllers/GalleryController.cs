@@ -11,13 +11,15 @@ namespace UniPhotoGallery.Controllers
     {
         public ActionResult Index()
         {
-            if(SelectedUser != null)
+            var selectedUser = SelectedUser;
+            
+            if(selectedUser != null)
             {
-                var retModel = new IndexVM { OwnerSeoName = SelectedUser.OwnerDirectory };
-                var userRootGallery = GalleryService.GetRootGallery(SelectedUser.OwnerId);
+                var retModel = new IndexVM { OwnerSeoName = selectedUser.OwnerDirectory };
+                var userRootGallery = GalleryService.GetRootGallery(selectedUser.OwnerId);
                 if (userRootGallery != null)
                 {
-                    var childGalleries = GalleryService.GetGalleryChildrens(SelectedUser.OwnerId, userRootGallery.GalleryId);
+                    var childGalleries = GalleryService.GetGalleryChildrens(selectedUser.OwnerId, userRootGallery.GalleryId);
                     retModel.RootGallery = userRootGallery;
                     retModel.RootGalleryChildrens = childGalleries;
 
@@ -32,12 +34,17 @@ namespace UniPhotoGallery.Controllers
 
                     return View(retModel);
                 }
+                
+                return RedirectToAction("NotReady");
             }
 
             return RedirectToAction("Index", "Home");
         }
 
-
+        public ActionResult NotReady()
+        {
+            return View();
+        }
         
         public ActionResult Show(string Id)
         {

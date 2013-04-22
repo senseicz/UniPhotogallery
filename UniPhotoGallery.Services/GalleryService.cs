@@ -56,6 +56,7 @@ namespace UniPhotoGallery.Services
         public const string GALLERIES_ALL = "GALLERIES";
         public const string GALLERY_BY_ID = "GALLERY_{0}"; //galleryId
         public const string GALLERIES_BY_OWNERID = "GALLERIES_BY_OWNERID_{0}"; //ownerId
+        public const string ROOT_GALLERY_BY_OWNERID = "ROOT_BY_OWNERID_{0}"; //ownerId
         
         public List<Gallery> GetAll()
         {
@@ -108,13 +109,16 @@ namespace UniPhotoGallery.Services
 
         public Gallery GetRootGallery(int ownerId)
         {
-            var userGalleries = GetGalleriesForUser(ownerId);
-            if (userGalleries != null && userGalleries.Any())
-            {
-                return userGalleries.FirstOrDefault(g => g.GalleryType == (int)GalleryTypes.Root);
-            }
-            
-            return null;
+            var cacheKey = ROOT_GALLERY_BY_OWNERID.Fmt(ownerId);
+            return _baseService.Cacher.Get(cacheKey, () => _galleryRepo.GetRootGallery(ownerId));
+
+            //var userGalleries = GetGalleriesForUser(ownerId);
+            //if (userGalleries != null && userGalleries.Any())
+            //{
+            //    return userGalleries.FirstOrDefault(g => g.GalleryType == (int)GalleryTypes.Root);
+            //}
+
+            //return null;
         }
 
         public Gallery GetTrashGallery(int ownerId)
@@ -185,12 +189,14 @@ namespace UniPhotoGallery.Services
 
         public List<Gallery> GetGalleryChildrens(int ownerId, int parentGalleryId)
         {
-            var userGalleries = GetGalleriesForUser(ownerId);
-            if (userGalleries != null && userGalleries.Any(g => g.ParentId == parentGalleryId))
-            {
-                return userGalleries.Where(g => g.ParentId == parentGalleryId).ToList();
-            }
-            return null;
+            return _galleryRepo.GetGalleryChildrens(parentGalleryId);
+
+            //var userGalleries = GetGalleriesForUser(ownerId);
+            //if (userGalleries != null && userGalleries.Any(g => g.ParentId == parentGalleryId))
+            //{
+            //    return userGalleries.Where(g => g.ParentId == parentGalleryId).ToList();
+            //}
+            //return null;
         }
 
         public void ClearTrashGallery(int ownerId)

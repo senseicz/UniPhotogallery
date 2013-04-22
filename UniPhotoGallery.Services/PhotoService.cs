@@ -70,8 +70,7 @@ namespace UniPhotoGallery.Services
             if (photo != null)
             {
                 photo.BasePhotoVirtualPath = _baseService.AppConfig.GalleryImagesRoot;
-                photo.Owner = _baseService.UserRepo.GetById(photo.OwnerId);
-
+                photo.Owner = UserService.GetOwnerById(photo.OwnerId);
                 return photo;
             }
 

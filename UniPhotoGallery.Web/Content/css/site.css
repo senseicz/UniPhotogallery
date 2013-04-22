@@ -14,13 +14,12 @@
 
     /* Special class on .container surrounding .navbar, used for positioning it into place. */
     .navbar-wrapper {
-      position: absolute;
+      /*position: absolute;*/
       top: 0;
       left: 0;
       right: 0;
       z-index: 10;
-      margin-top: 20px;
-      margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+      margin-top: 10px;
     }
     .navbar-wrapper .navbar {
 
@@ -216,9 +215,19 @@ a:link .galleryName, a:visited .galleryName, a:hover .galleryName, a:active .gal
     width: 200px;
 }
 
-   
+.biggerPaddingTop {
+    padding-top: 20px;
+}   
 
-
+.rsGCaption {
+    position: absolute;
+    bottom: 100px;
+    left: 20px;
+    width: 400px;
+    padding: 10px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    color: black;
+}
 
     /* RESPONSIVE CSS
     -------------------------------------------------- */

@@ -12,12 +12,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="brand" href="#">KUS VOLA</a>
+        <a class="brand" href="/">KUS VOLA</a>
         <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
         <div class="nav-collapse collapse">
             <ul class="nav">
                 <li class="active">
-                    <a href="/">Všichni voli</a>
+                    <a href="/luigi/gallery">Luigi</a>
+                </li>
+                <li class="active">
+                    <a href="/daf/gallery">Daf</a>
+                </li>
+                <li class="active">
+                    <a href="/andrey/gallery">Andrey</a>
+                </li>
+                <li class="active">
+                    <a href="/tonda/gallery">Tuny</a>
                 </li>
             </ul>
             
@@ -43,19 +52,19 @@
                 else 
                 {
                     <form class="navbar-form pull-right" action="/account/logon" method="POST">
-                        <input class="input-mini" type="text" placeholder="Email" name="email">
-                        <input class="input-mini" type="password" placeholder="Password" name="password">
+                        <input class="input-medium" type="text" placeholder="Email" name="email">
+                        <input class="input-medium" type="password" placeholder="Password" name="password">
                         <button type="submit" class="btn btn-mini">Přihlásit</button>
-                        <a href="/account/register" class="btn btn-mini">Registrace</a>
+                        @*<a href="/account/register" class="btn btn-mini">Registrace</a>*@
                     </form>
 
-                    <form action="@Url.Content("~/api/auth/googleopenid")" method="POST" class="pull-right">
+                    @*<form action="@Url.Content("~/api/auth/googleopenid")" method="POST" class="pull-right">
                         <input type="image" src="@Url.Content("~/Content/img/ico-gplus.png")" alt="Přihlásit se účtem na Google">
                     </form>
 
                     <a href="@Url.Content("~/api/auth/facebook")" class="pull-right">
                         <img src="@Url.Content("/Content/img/ico-facebook.png")" alt="Přihlásit se účtem na Facebooku" />
-                    </a>
+                    </a>*@
                 }
             }
         </div>

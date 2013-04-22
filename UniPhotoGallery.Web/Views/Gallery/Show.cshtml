@@ -22,7 +22,8 @@
                 numImagesToPreload: 4,
                 arrowsNavAutohide: true,
                 arrowsNavHideOnTouch: true,
-                keyboardNavEnabled: true
+                keyboardNavEnabled: true,
+                globalCaption: true
             });
         });
        
@@ -46,7 +47,7 @@
     <div id="show-gallery" class="rsMinW royalSlider">
         @foreach (var photo in Model.Gallery.GalleryPhotos.OrderBy(p => p.Order))
         {
-            <a class="rsImg" href="@photo.Photo.GetPhotoUrl("w1000")" data-rsBigImg="@photo.Photo.GetPhotoUrl("w1000")">@photo.Photo.Description
+            <a class="rsImg rsAbsoluteEl" href="@photo.Photo.GetPhotoUrl("w1000")" data-rsBigImg="@photo.Photo.GetPhotoUrl("w1000")">@photo.Photo.Description
                 <img width="100" class="rsTmb" src="@photo.Photo.GetPhotoUrl("adminthumb")" />
             </a>
         }

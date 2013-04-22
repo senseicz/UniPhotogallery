@@ -10,7 +10,9 @@ namespace UniPhotoGallery.Data
     {
         List<Gallery> GetAll();
         List<Gallery> GetAll(int ownerId);
-
+        List<Gallery> GetGalleryChildrens(int parentGalleryId);
+            
+        Gallery GetRootGallery(int ownerId);
         Gallery GetById(int galleryId);
         List<Gallery> Find(string keyword);
 
@@ -40,6 +42,22 @@ namespace UniPhotoGallery.Data
             using (IDbConnection conn = _db.OpenDbConnection())
             {
                 return conn.Select<Gallery>(g => g.OwnerId == ownerId);
+            }
+        }
+
+        public List<Gallery> GetGalleryChildrens(int parentGalleryId)
+        {
+            using (IDbConnection conn = _db.OpenDbConnection())
+            {
+                return conn.Select<Gallery>(g => g.ParentId == parentGalleryId);
+            }
+        }
+
+        public Gallery GetRootGallery(int ownerId)
+        {
+            using (IDbConnection conn = _db.OpenDbConnection())
+            {
+                return conn.First<Gallery>(g => g.OwnerId == ownerId && g.GalleryType == (int) GalleryTypes.Root);
             }
         }
 
