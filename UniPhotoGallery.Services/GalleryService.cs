@@ -36,6 +36,7 @@ namespace UniPhotoGallery.Services
         void EnsurePhotoTypes(Gallery gallery, string[] types);
 
         int InsertOwner(Owner owner);
+        void EnsureOwnerSetup(int ownerId);
 
         List<GalleryBreadcrumb> GenerateGalleryBreadcrumb(Gallery gallery);
 
@@ -57,6 +58,7 @@ namespace UniPhotoGallery.Services
         public const string GALLERY_BY_ID = "GALLERY_{0}"; //galleryId
         public const string GALLERIES_BY_OWNERID = "GALLERIES_BY_OWNERID_{0}"; //ownerId
         public const string ROOT_GALLERY_BY_OWNERID = "ROOT_BY_OWNERID_{0}"; //ownerId
+        public const string TRASH_GALLERY_BY_OWNERID = "TRASH_BY_OWNERID_{0}"; //ownerId
         
         public List<Gallery> GetAll()
         {
@@ -123,13 +125,16 @@ namespace UniPhotoGallery.Services
 
         public Gallery GetTrashGallery(int ownerId)
         {
-            var userGalleries = GetGalleriesForUser(ownerId);
-            if (userGalleries != null && userGalleries.Any())
-            {
-                return userGalleries.FirstOrDefault(g => g.GalleryType == (int)GalleryTypes.Trash);
-            }
+            var cacheKey = TRASH_GALLERY_BY_OWNERID.Fmt(ownerId);
+            return _baseService.Cacher.Get(cacheKey, () => _galleryRepo.GetTrashGallery(ownerId));
 
-            return null;
+            //var userGalleries = GetGalleriesForUser(ownerId);
+            //if (userGalleries != null && userGalleries.Any())
+            //{
+            //    return userGalleries.FirstOrDefault(g => g.GalleryType == (int)GalleryTypes.Trash);
+            //}
+
+            //return null;
         }
 
         private bool IsRootGalleryExistForUser(int ownerId)
@@ -325,21 +330,29 @@ namespace UniPhotoGallery.Services
         public int InsertOwner(Owner owner)
         {
             var newOwnerId = UserService.InsertOwner(owner);
-
-            if (!IsRootGalleryExistForUser(newOwnerId))
-            {
-                CreateRootGallery(owner);
-            }
-
-            if (!IsTrashGalleryExistForUser(newOwnerId))
-            {
-                CreateTrashGallery(owner);
-            }
-
-            CreateOwnerRootDirectory(owner.OwnerDirectory);
-            
             _baseService.Cacher.RemoveAll(new List<string> { GALLERIES_ALL, GALLERIES_BY_OWNERID.Fmt(newOwnerId) });
+            EnsureOwnerSetup(newOwnerId);
             return newOwnerId;
+        }
+
+        public void EnsureOwnerSetup(int ownerId)
+        {
+            var owner = UserService.GetOwnerById(ownerId);
+
+            if (owner != null)
+            {
+                if (!IsRootGalleryExistForUser(ownerId))
+                {
+                    CreateRootGallery(owner);
+                }
+
+                if (!IsTrashGalleryExistForUser(ownerId))
+                {
+                    CreateTrashGallery(owner);
+                }
+
+                CreateOwnerRootDirectory(owner.OwnerDirectory);
+            }
         }
 
         public List<GalleryBreadcrumb> GenerateGalleryBreadcrumb(Gallery gallery)

@@ -19,6 +19,7 @@ namespace UniPhotoGallery.Controllers
 
         public ActionResult Index()
         {
+            GalleryService.EnsureOwnerSetup(UserSession.OwnerId);
             var galleries = GalleryService.GetGalleriesForUser(UserSession.OwnerId);
             var trash = GalleryService.GetTrashGallery(UserSession.OwnerId);
             var retModel = new AdminVM { Galleries = galleries, Trash = trash };
@@ -192,6 +193,7 @@ namespace UniPhotoGallery.Controllers
                     Order = gal.Order,
                     Year = gal.Year,
                     PreviewGallery = gal.GalleryType == (int)GalleryTypes.Preview,
+                    IsRootGallery = gal.GalleryType == (int)GalleryTypes.Root,
                     //Diaries = gal.Diaries,
                     Photos = gal.GalleryPhotos,
                     PreviewPhotos = gal.PreviewPhotos,
@@ -200,7 +202,7 @@ namespace UniPhotoGallery.Controllers
         }
 
         [HttpPost]
-        public ActionResult GalleryEdit(GalleryEdit galEdit, string hdnPreviewPhotosShadow, string hdnPhotosShadow, string hdnTrashShadow)
+        public ActionResult GalleryEdit(GalleryEdit galEdit, string hdnPreviewPhotosShadow, string hdnPhotosShadow, string hdnTrashShadow, string hdnIsRootGallery)
         {
             var allOk = true;
             if (ModelState.IsValid)
@@ -230,6 +232,11 @@ namespace UniPhotoGallery.Controllers
                     if (galEdit.PreviewGallery)
                     {
                         gal.GalleryType = (int) GalleryTypes.Preview;
+                    }
+
+                    if (hdnIsRootGallery.ToLower() == "true")
+                    {
+                        gal.GalleryType = (int) GalleryTypes.Root;
                     }
 
                     if (galEdit.GalleryId.HasValue) //UPDATE

@@ -197,6 +197,7 @@ namespace UniPhotoGallery.DomainModel.ViewModels
 
         public string Year { get; set; }
         public bool PreviewGallery { get; set; }
+        public bool IsRootGallery { get; set; }
 
         //public SelectList GalleryList { get; set; }
         //public SelectList GalleryListForPreviewGalleries { get; set; }

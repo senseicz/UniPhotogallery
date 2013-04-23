@@ -38,11 +38,13 @@
                         Přihlášený uživatel: <strong>@session.DisplayName</strong> 
                         <a href="/account/logout">logout</a>
                         
+                        @*
                         @if (session.Roles != null && session.Roles.Any(r => r.ToLower().Contains("admin")))
                         {
                             <a href="/admin/adminlist">admin vlastníků galerií</a>    
                         }
-                        
+                        *@
+
                         @if (session.OwnerId > 0)
                         {
                             <a href="/admin/index">admin galerie</a>    
