@@ -219,6 +219,7 @@
     <Content Include="Content\img\preloader.gif" />
     <Content Include="Content\img\rs-default.png" />
     <Content Include="Content\img\rs-minimal-white.png" />
+    <Content Include="Content\img\topfeature.jpg" />
     <Content Include="Content\img\tuny.jpg" />
     <Content Include="Content\js\ss-validation.js" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />

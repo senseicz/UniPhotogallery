@@ -5,6 +5,7 @@
     body {
       padding-bottom: 40px;
       color: #5a5a5a;
+      font-family: 'Roboto Condensed', sans-serif;
     }
 
 
@@ -128,6 +129,58 @@
 
 
 /*KUS VOLA*/
+
+.span3 strong {
+    text-transform: uppercase;
+    color: darkred;
+    font-size: 120%;
+    font-style: italic;
+    /*font-weight: bold;*/
+    padding-right: 5px;
+}
+
+.transparentBG {
+    background: #ffffff;
+    -moz-opacity: 0.66;
+    opacity: 0.66;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=66);
+    color: #000000;
+    padding: 30px;
+    height: 33px;   
+}
+
+.kusvolaFeature {
+    background: url('/Content/img/topfeature.jpg') no-repeat;
+    left: 30px;
+    position: relative;
+    width: 1168px;
+    height: 226px;
+}
+
+.kusvolaFeatureLine1 {
+    top: 16px;
+    left: 162px;
+    position: absolute;
+    font-size: 500%;
+}
+
+.kusvolaFeatureLine2 {
+    position: absolute;
+    top: 122px;
+    left: 501px;
+    font-size: 500%;
+}
+
+.kusvolaFeatureText {
+    text-transform: uppercase;
+    color: darkred;
+    font-size: 120%;
+    font-style: italic;
+    padding-right: 12px;
+    margin-left: -5px;
+}
+
+
 .mainPhoto {
     border: 10px solid #FFFFFF;
     margin-left: auto;
@@ -139,10 +192,10 @@
 
 .mainPhotoHeader {
     background-color: #fff;
-    height: 45px;
+    height: 30px;
     text-align: right;
-    padding: 10px 20px;
-    font-size: 2.4em;
+    padding: 30px;
+    font-size: 3.8em;
     margin-top: 40px;
     margin-bottom: 30px;
     -moz-opacity: 0.66;
@@ -154,14 +207,15 @@
     text-align: right;
     padding: 10px 30px;
     font-size: 2.4em;
-    margin-top: 20px; 
+    margin-top: 20px;
+    margin-left: auto;
     text-transform: uppercase;
     background-color: #fff;
     -moz-opacity: 0.66;
     opacity: 0.66;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=66);
     width: 300px;
-    float: right;
+    /*float: right;*/
     cursor: pointer;
     display: block;
 }
@@ -199,7 +253,7 @@ a:link .galleryName, a:visited .galleryName, a:hover .galleryName, a:active .gal
     margin-left: 15px;
     padding: 7px;
     width: 200px;
-    height: 230px;
+    height: 245px;
     position: relative;
 }
 
@@ -216,7 +270,7 @@ a:link .galleryName, a:visited .galleryName, a:hover .galleryName, a:active .gal
 }
 
 .biggerPaddingTop {
-    padding-top: 20px;
+    padding-top: 30px;
 }   
 
 .rsGCaption {

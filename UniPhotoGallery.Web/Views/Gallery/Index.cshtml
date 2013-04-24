@@ -4,7 +4,7 @@
     var mainPhotoStyle = "";
     if(Model.HasSomePreviewImage)
     {
-        mainPhotoStyle = string.Format("style=\"background-image: url('{0}')\"", Model.FirstPreviewUrl);
+        mainPhotoStyle = string.Format("style=\"background: #efefef url('{0}') no-repeat top left\"", Model.FirstPreviewUrl);
     }
 }
 
@@ -32,7 +32,7 @@
         function switchBackground(imageUrl) {
             $('.mainPhoto').fadeTo('fast', 0.7, function()
             {
-                $(this).css('background-image', 'url(' + imageUrl + ')');
+                $(this).css('background', '#efefef url(' + imageUrl + ') no-repeat top left');
             }).fadeTo('slow', 1);
         }
 

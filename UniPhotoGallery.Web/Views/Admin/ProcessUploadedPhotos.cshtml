@@ -85,6 +85,19 @@
                 </div>
             }
         </form>
+        
+        <span id="galleryAddHolder" class="Hidden dropContainer">
+            <div id="AddNewGalleryDescription"></div>
+            <form method="POST" action="/admin/InsertGalleryFromLeaf">
+                <input type="hidden" name="ParentGalleryId" id="ParentGalleryId" value="" />
+                <div class="inputRow">
+                    <span class="inputField">Název :  <input type="text" name="Name" class="w50" /></span>
+                    <span class="inputField">Náhledová: <input type="checkbox" name="PreviewGallery"/></span>
+                    <input type="submit" value="Přidat"/>
+                </div>
+            </form>
+        </span>
+
     </div>
 </div>
 <div class="cleaner"></div>

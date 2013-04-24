@@ -1,6 +1,18 @@
 ﻿$(function () {
     var uploadedPhotos = $("#photos");
     uploadedPhotos.selectable();
+
+    $(".btnAddNewGallery").click(function() {
+        var clickedbutton = $(this);
+        var galleryId = clickedbutton.attr("data-parentGalleryId");
+        var galleryName = clickedbutton.attr("data-parentGalleryName");
+
+        //clickedbutton.click(function () {
+            $("#AddNewGalleryDescription").text("Nová galerie pod rodičovskou galerii " + galleryName);
+            $("#ParentGalleryId").val(galleryId);
+            $("#galleryAddHolder").removeClass("Hidden");
+        //});
+    });
 });
 
 function addSelectedPhotosToGallery(destinationGalleryId) {

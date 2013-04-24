@@ -2,34 +2,44 @@
 @model List<Gallery>
 
 <ul>
-    @foreach(var galerie in Model.OrderBy(m => m.Order))
+    @if (Model != null && Model.Any())
     {
-        string photosAlreadyIn = "";
-
-        if (galerie.PhotosCount > 0)
+        foreach (var galerie in Model.OrderBy(m => m.Order))
         {
-            foreach (var photo in galerie.GalleryPhotos)
-            {
-                photosAlreadyIn = photosAlreadyIn + photo.PhotoId + ",";
-            }
-        }
+            string photosAlreadyIn = "";
 
-        <li id="gal-@galerie.GalleryId">
-            
-            @if(galerie.GalleryType != (int)GalleryTypes.Preview)
+            if (galerie.PhotosCount > 0)
             {
-                <strong>@galerie.Name</strong>
-                @:[počet: <span id = "gal-counter-@galerie.GalleryId" > @galerie.PhotosCount </span> @*, nově přidaných <span id = "gal-newCounter-@galerie.Id" > 0 </span>*@]
-                  <img class="addToGalleryButton" src="/Content/img/document_add_24.png" width="24" height="24" alt="Přidat označené do této galerie" onclick="addSelectedPhotosToGallery('@galerie.GalleryId')" title="Přidat označené do této galerie" />
+                foreach (var photo in galerie.GalleryPhotos)
+                {
+                    photosAlreadyIn = photosAlreadyIn + photo.PhotoId + ",";
+                }
             }
-            else
-            {
-                @galerie.Name @:[náhledová galerie]
-            }
+
+            <li id="gal-@galerie.GalleryId">
             
-            <input type="hidden" name="addedPhotos-@galerie.GalleryId" id="addedPhotos-@galerie.GalleryId" value="@photosAlreadyIn" />
+                @if (galerie.GalleryType != (int) GalleryTypes.Preview)
+                {
+                    <strong>@galerie.Name</strong>
+                    @:[počet: <span id = "gal-counter-@galerie.GalleryId" > @galerie.PhotosCount </span> @*, nově přidaných <span id = "gal-newCounter-@galerie.Id" > 0 </span>*@]
+                    <img class="addToGalleryButton" src="/Content/img/document_add_24.png" width="24" height="24" alt="Přidat označené do této galerie" onclick=" addSelectedPhotosToGallery('@galerie.GalleryId') " title="Přidat označené do této galerie" />
+                }
+                else
+                {
+                    @galerie.Name
+                    @:[náhledová galerie]
+                }
             
-            @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new { area = "Partials", leafId = galerie.GalleryId })
+                <input type="hidden" name="addedPhotos-@galerie.GalleryId" id="addedPhotos-@galerie.GalleryId" value="@photosAlreadyIn" />
+            
+                @Html.Action("GalleryLeafDroppable", "GalleryLeaf", new {area = "Partials", leafId = galerie.GalleryId})
+            </li>
+        }
+    }
+    @if ((bool) ViewBag.ShowAddNew)
+    {
+        <li>
+            <input type="button" value="Nová galerie pod @ViewBag.ThisGalName" class="btnAddNewGallery" data-parentGalleryId="@ViewBag.ThisGalId" data-parentGalleryName="@ViewBag.ThisGalName" />
         </li>
     }
 </ul>

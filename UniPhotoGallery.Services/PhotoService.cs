@@ -440,11 +440,21 @@ namespace UniPhotoGallery.Services
 
             if (subDirs.Any())
             {
-                subDirs.ToList().ForEach( item => retColl.Add(new OrigPhotoSubDirectory
-                               {
-                                   DirName = item.Name,
-                                   FullParentPath = innerSubDir + item.Name
-                               }));
+                //only show directories that have files or subdirs in it.
+                foreach (var subdir in subDirs)
+                {
+                    var files = subdir.GetFiles();
+                    var subdirs = subdir.GetDirectories();
+
+                    if (files.Length > 0 || subdirs.Length > 0)
+                    {
+                        retColl.Add(new OrigPhotoSubDirectory
+                            {
+                                DirName = subdir.Name,
+                                FullParentPath = innerSubDir + subdir.Name
+                            });
+                    }
+                }
             }
 
             return retColl;

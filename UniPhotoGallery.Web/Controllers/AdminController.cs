@@ -297,6 +297,36 @@ namespace UniPhotoGallery.Controllers
         }
 
         [HttpPost]
+        public ActionResult InsertGalleryFromLeaf(int ParentGalleryId, string name, string PreviewGallery)
+        {
+            var gal = new Gallery
+            {
+                ParentId = ParentGalleryId,
+                DateCreated = DateTime.Now,
+                Name = name,
+                Description = "",
+                Order = 999,
+                Year = DateTime.Now.Year.ToString(),
+                OwnerId = UserSession.OwnerId,
+            };
+
+            var isPreviewGallery = false;
+
+            if (!string.IsNullOrEmpty(PreviewGallery) && bool.TryParse(PreviewGallery, out isPreviewGallery) && isPreviewGallery)
+            {
+                gal.GalleryType = (int) GalleryTypes.Preview;
+            }
+            else
+            {
+                gal.GalleryType = (int) GalleryTypes.Content;
+            }
+
+            var newId = GalleryService.Insert(gal);
+
+            return RedirectToAction("ProcessUploadedPhotos");
+        }
+
+        [HttpPost]
         public ActionResult GalleryEditCustom(int GalleryId, string hdnPreviewPhotos, string hdnPhotos, string hdnTrash)
         {
             var gallery = GalleryService.GetById(GalleryId);
