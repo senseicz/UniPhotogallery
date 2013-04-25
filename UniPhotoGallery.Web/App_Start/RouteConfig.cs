@@ -33,7 +33,7 @@ namespace UniPhotoGallery
             routes.MapRoute(
                 name: "UserRoute",
                 url: "{username}/{controller}/{action}/{id}",
-                defaults: new { username = "Null", controller = "Home", action = "Index", id = UrlParameter.Optional });
+                defaults: new { username = "", controller = "Home", action = "Index", id = UrlParameter.Optional });
 
         }
     }

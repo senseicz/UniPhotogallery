@@ -21,6 +21,7 @@ namespace UniPhotoGallery.Services
         List<User> GetAllUsers();
         User GetUser(int userId);
         bool IsUserOwner(int userId);
+        bool IsUserOwner(string username);
     }
     
     public class UserService : IUserService
@@ -93,6 +94,16 @@ namespace UniPhotoGallery.Services
             if (owners != null)
             {
                 return owners.Any(o => o.UserId == userId);
+            }
+            return false;
+        }
+
+        public bool IsUserOwner(string ownerName)
+        {
+            var owners = GetAllOwners();
+            if (owners != null)
+            {
+                return owners.Any(o => o.OwnerName == ownerName);
             }
             return false;
         }

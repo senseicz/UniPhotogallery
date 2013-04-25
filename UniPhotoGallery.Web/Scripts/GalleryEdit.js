@@ -28,12 +28,20 @@ function GetPreviewPhotoCount() {
     return vals.length;
 }
 
-function CreatePhotoLi(targetContainerId, photoId) {
+function CreatePhotoLi(targetContainerId, photoId, addClickCallback) {
     var targetContainer = $("#" + targetContainerId);
     if (targetContainer) {
         $.getJSON('/admin/GetPhotoThumb/' + photoId, function (data) {
             var li = '<li class="ui-widget-content" data-photoId="' + data.id + '"><img src="' + data.path + '" /></li>';
             targetContainer.append(li);
+            if (addClickCallback) {
+                var elemLi = $("#PhotoDescriptionEdit_Preview li[data-photoId=" + photoId + "]");
+                elemLi.click(function() {
+                    DeletePhotoLiDescription(photoId);
+                });
+                
+                SetupDescriptionForm();
+            }
         });
     }
 }
@@ -43,6 +51,12 @@ function DeletePhotoLi(targetContainerId) {
     if (targetContainer) {
         targetContainer.remove(".ui-selected");
     }
+}
+
+function DeletePhotoLiDescription(photoId) {
+    var container = $("#PhotoDescriptionEdit_Preview");
+    container.children("li[data-photoId=" + photoId + "]").remove();
+    SetupDescriptionForm();
 }
 
 function GetGalleryThumbs(galleryId, targetContainerId) {
@@ -64,7 +78,29 @@ function ClearThumbs(targetContainerId) {
     }
 }
 
-function SetPhotoDescription(photoId) {
+function SetupDescriptionForm() {
+    var photosCount = GetPhotoIdsInDescriptionForm();
+
+    if (photosCount.length > 0) {
+        if ($("#PhotoDescriptionEdit").hasClass("Hidden")) {
+            $("#PhotoDescriptionEdit").removeClass("Hidden");
+        }
+        
+        if (photosCount.length == 1) {
+            if (!$("#PhotoDescriptionEdit_Warning").hasClass("Hidden")) {
+                $("#PhotoDescriptionEdit_Warning").addClass("Hidden");
+            }
+        } else {
+            //if ($("#PhotoDescriptionEdit_Warning").hasClass("Hidden")) {
+                $("#PhotoDescriptionEdit_Warning").removeClass("Hidden");
+            //}
+        }
+    } else {
+        ClearDescriptionForm();
+    }
+}
+
+function SetPhotoDescriptionText(photoId) {
     $.getJSON('/admin/GetPhotoDescription/' + photoId, function (data) {
             $("#PhotoDescriptionEdit_Description").val(data.Description);
         });
@@ -76,6 +112,15 @@ function ClearDescriptionForm() {
     $("#PhotoDescriptionEdit_Description").val('');
     if(!$("#PhotoDescriptionEdit").hasClass("Hidden")) { $("#PhotoDescriptionEdit").addClass("Hidden"); }
     if (!$("#PhotoDescriptionEdit_Warning").hasClass("Hidden")) { $("#PhotoDescriptionEdit_Warning").removeClass("MessageWarning").addClass("Hidden"); }
+}
+
+function GetPhotoIdsInDescriptionForm() {
+    var photoIds = new Array();
+    $("#PhotoDescriptionEdit_Preview li").each(function () {
+        photoIds.push($(this).attr("data-photoId"));
+    });
+
+    return photoIds;
 }
 
 var previewSelected;
@@ -182,7 +227,7 @@ $(function () {
             if (photoId) {
                 if (vals.indexOf(photoId) < 0 && vals.length <= 5) {
                     vals.push(photoId);
-                    CreatePhotoLi("preview-photos", photoId);
+                    CreatePhotoLi("preview-photos", photoId, false);
                 }
             }
             $(this).removeClass("ui-selected");
@@ -205,7 +250,7 @@ $(function () {
                 if (trashVals.indexOf(photoId) < 0) {
                     //add to trash
                     trashVals.push(photoId);
-                    CreatePhotoLi("trash", photoId);
+                    CreatePhotoLi("trash", photoId, false);
 
                     //remove from photos
                     photoVals.splice(photoVals.indexOf(photoId), 1);
@@ -234,7 +279,7 @@ $(function () {
                 if (photoVals.indexOf(photoId) < 0) {
                     //add to photos
                     photoVals.push(photoId);
-                    CreatePhotoLi("photos", photoId);
+                    CreatePhotoLi("photos", photoId, false);
 
                     //removeFromTrash
                     trashVals.splice(trashVals.indexOf(photoId), 1);
@@ -262,42 +307,41 @@ $(function () {
     $("#btnEditDescription").click(function () {
         var counter = 0;
         var firstPhotoId;
-        var editPhotoIds = $("#PhotoDescriptionEdit_PhotoId");
         
         gallerySelected.each(function () {
             var photoId = $(this).attr("data-photoId");
-
             if (photoId) {
-                if (counter == 0) { firstPhotoId = photoId; }
-                CreatePhotoLi("PhotoDescriptionEdit_Preview", photoId);
-                editPhotoIds.val(editPhotoIds.val() + "," + photoId);
+                var photosInDescriptionList = GetPhotoIdsInDescriptionForm();
+                if (photosInDescriptionList.length == 0) {
+                    firstPhotoId = photoId;
+                    CreatePhotoLi("PhotoDescriptionEdit_Preview", photoId, true);
+                    counter++;
+                } else {
+                    //add only photos that are not already there.
+                    if (photosInDescriptionList.indexOf(photoId) == -1) {
+                        if (counter == 0) {
+                            firstPhotoId = photoId;
+                        }
+                        CreatePhotoLi("PhotoDescriptionEdit_Preview", photoId, true);
+                        counter++;
+                    }
+                }
             }
-            counter = counter + 1;
             $(this).removeClass("ui-selected");
         });
 
-        SetPhotoDescription(firstPhotoId);
-        if ($("#PhotoDescriptionEdit").hasClass("Hidden")) {
-            $("#PhotoDescriptionEdit").removeClass("Hidden");
-        }
-        
-        if (counter > 2) {
-            if ($("#PhotoDescriptionEdit_Warning").hasClass("Hidden")) {
-                $("#PhotoDescriptionEdit_Warning").removeClass("Hidden").addClass("MessageWarning");
-            }
-        }
-        
+        SetPhotoDescriptionText(firstPhotoId);
         $(this).attr("disabled", "disabled");
     });
 
     $("#PhotoDescriptionEdit_Button").click(function () {
-        var photoIds = $("#PhotoDescriptionEdit_PhotoId").val();
+        var photoIds = GetPhotoIdsInDescriptionForm();
         var description = $("#PhotoDescriptionEdit_Description").val();
         
         $.ajax({
             type: "POST",
             url: "/admin/PhotoDescriptionEdit",
-            data: { strPhotoIds: photoIds, description: description }
+            data: { strPhotoIds: photoIds.join(), description: description }
         }).done(function (msg) {
             toastr.success(msg, 'Úspěch');
             ClearDescriptionForm();

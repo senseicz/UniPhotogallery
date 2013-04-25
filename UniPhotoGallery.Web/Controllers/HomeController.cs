@@ -6,13 +6,13 @@ namespace UniPhotoGallery.Controllers
     {
         public ActionResult Index()
         {
-            //Logger.Info("Info debug");
-            //Logger.Debug("Debug Event Log Entry.");
-            //Logger.Warn("Warning Event Log Entry.");
-
-            //throw new Exception("This is test");
-
             ViewBag.UserSession = base.UserSession;
+
+            var userName = RouteData.Values["username"].ToString();
+            if (!string.IsNullOrEmpty(userName) && UserService.IsUserOwner(userName))
+            {
+                return RedirectToActionPermanent("Index", "Gallery");
+            }
 
             return View();
         }
